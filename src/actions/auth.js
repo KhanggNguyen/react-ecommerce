@@ -24,7 +24,7 @@ export const signup = (user) => {
             }
         }catch(err){
             const { data } = err.response;
-            dispatch(signupFailure({error: data.error}));
+            dispatch(signupFailure({error: data.message}));
         }
     }
 }

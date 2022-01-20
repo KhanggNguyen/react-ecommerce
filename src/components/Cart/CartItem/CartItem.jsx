@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Typography,
     Button,
@@ -11,40 +11,54 @@ import { HighlightOff } from "@material-ui/icons";
 
 import useStyles from "./styles";
 
-const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
+const CartItem = ({ item, onQtyIncrement, onQtyDecrement, onRemoveFromCart }) => {
     const classes = useStyles();
+    console.log(item);
+    const [qty, setQty] = useState(item.qty);
+    const { _id, name, price, img } = item;
+
+    const handleQtyIncrement = () => {
+        setQty(qty+1);
+        onQtyIncrement(_id, +1);
+    }
+
+    const handleQtyDecrement = () => {
+        if (qty <= 1) return;
+        setQty(qty-1);
+        onQtyDecrement(_id, -1);
+    }
 
     return (
         <Grid
             container
-            columnSpacing={{ xs: 1, sm: 3, md: 6 }}
+            columnspacing={{ xs: 1, sm: 3, md: 6 }}
             className={classes.root}
         >
             <CardMedia
-                image={item.image.url}
-                alt={item.name}
+                image={img}
+                alt={name}
                 className={classes.media}
-                src={item.image.url}
+                src={img}
             />
             <Typography variant="h6" className={classes.title}>
-                {item.name}
+                {name}
             </Typography>
             <Typography variant="h6" className={classes.price}>
-                {item.line_total.formatted_with_symbol}
+                {price}
             </Typography>
             <div className={classes.buttons}>
                 <Button
                     type="button"
                     size="small"
-                    onClick={() => onUpdateCartQty(item.id, item.quantity - 1)}
+                    onClick={() => handleQtyDecrement(_id, qty - 1)}
                 >
                     -
                 </Button>
-                <Typography variant="h7">{item.quantity}</Typography>
+                <Typography variant="subtitle1">{qty}</Typography>
                 <Button
                     type="button"
                     size="small"
-                    onClick={() => onUpdateCartQty(item.id, item.quantity + 1)}
+                    onClick={() => handleQtyIncrement(_id, qty + 1)}
                 >
                     +
                 </Button>
@@ -52,7 +66,7 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
             <IconButton
                 className={classes.removeAction}
                 aria-label="Remove from cart"
-                onClick={() => onRemoveFromCart(item.id)}
+                onClick={() => onRemoveFromCart(_id)}
             >
                 <HighlightOff className={classes.removeFromCart} />
             </IconButton>

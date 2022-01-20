@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from '../../actions/auth';
+import { logout } from '../../actions';
 import {
     AppBar,
     Container,
@@ -24,8 +24,9 @@ import useStyles from "./styles";
 
 import Categories from "./Categories/Categories";
 
-const Navbar = ({ totalItems }) => {
+const Navbar = () => {
     const auth = useSelector((state) => state.auth);
+    const cart = useSelector( (state) => state.cart);
     const dispatch = useDispatch();
 
     const [anchorElementNav, setAnchorElementNav] = useState(null);
@@ -62,7 +63,7 @@ const Navbar = ({ totalItems }) => {
     }
 
     useEffect(() => {
-
+        console.log(cart);
     }, [auth.authenticated]);
 
     const renderLoggedInMenu = () => {
@@ -267,7 +268,7 @@ const Navbar = ({ totalItems }) => {
                                     color="inherit"
                                 >
                                     <Badge
-                                        badgeContent={totalItems}
+                                        badgeContent={cart.totalItems}
                                         color="secondary"
                                     >
                                         <ShoppingCart />

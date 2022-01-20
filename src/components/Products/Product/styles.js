@@ -3,15 +3,10 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles(() => ({
     root: {
         maxWidth: "100%",
-        "&:hover": {
-            "& $cardAction": {
-                backgroundColor: "transparent",
-                opacity: "1",
-            },
-        },
     },
     media: {
-        paddingTop: "100%",
+        height: "auto",
+        paddingTop: '100%',
         objectFit: 'cover'
     },
     productAction: {
@@ -19,8 +14,6 @@ export default makeStyles(() => ({
         margin: "0 5px"
     },
     cardAction: {
-        opacity: "0",
-        position: "absolute",
         display: "flex",
         justifyContent: "flex-end",
     },

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
 import { Button, Menu, } from "@material-ui/core";
 
 import Category from "./Category/Category";
-
-const BASE_URL = process.env.REACT_APP_API_URL;
+import { useSelector } from "react-redux";
 
 const Categories = () => {
-    const [categories, setCategories] = useState([]);
+    const category = useSelector( (state) => state.category);
+
+    const [categories, setCategories] = useState(null);
     const [anchorElementNav, setAnchorElementNav] = useState(null);
     
     const handleOpenElNav = (e) => {
@@ -18,24 +18,19 @@ const Categories = () => {
         setAnchorElementNav(null);
     };
 
-    const fetchCategories = async () => {
-        const res = await axios.get(`${BASE_URL}/api/category/`);
-        if(res.status === 200) setCategories(res.data.categoryList);
-    };
-
     const renderCategories = (categoryList) => {
         let cats = [];
 
         for (let cate of categoryList) {
             cats.push(
-                <Category category={cate} onCloseElNav={handleCloseElNav} renderCategories={renderCategories}/>
+                <Category key={cate._id} category={cate} onCloseElNav={handleCloseElNav} renderCategories={renderCategories}/>
             );
         }
         return cats;
     };
-
+    
     useEffect(() => {
-        fetchCategories();
+        setCategories(category.categories);
     }, []);
 
     return (

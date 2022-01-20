@@ -1,12 +1,23 @@
-import React from 'react'
-import { Navbar, Products } from '../../components'
+import React, { useEffect } from "react";
+import { Layout, Products } from "../../components";
 
-const ProductListPage = ({onAddToCart}) => {
+import useStyles from './styles';
+
+const ProductListPage = () => {
+    const classes = useStyles();
+
+    useEffect(() => {
+    }, []);
     return (
         <>
-        <Products onAddToCart={onAddToCart} />
+            <Layout>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <Products />
+                </main>
+            </Layout>
         </>
-    )
-}
+    );
+};
 
-export default ProductListPage
+export default ProductListPage;

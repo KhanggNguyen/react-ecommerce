@@ -1,45 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Cart, Checkout, Navbar } from "./components";
-import { HomePage, LoginPage, RegisterPage, ProductListPage } from "./pages";
+import { HomePage, LoginPage, RegisterPage, ProductListPage, CartPage, CheckoutPage } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedin } from "./actions/auth";
+import ProductDetailpage from "./pages/productDetail/ProductDetailpage";
+import { isUserLoggedin, getAllCategory, getAllProducts, updateCartItems } from "./actions";
 
 export const App = () => {
+    const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
+    const category = useSelector((state) => state.category);
     const dispatch = useDispatch();
-    const [cart, setCart] = useState({});
-    const [order, setOrder] = useState({});
-    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!auth.authenticated) {
             dispatch(isUserLoggedin());
         }
+        dispatch(getAllCategory());
+        dispatch(getAllProducts());
+        dispatch(updateCartItems());
         console.log(auth);
+        console.log(category);
+        console.log(cart);
     }, [auth.authenticated]);
 
     return (
         <>
-            <Navbar />
-
             <Routes>
-                <Route path="/" element={<HomePage cart={cart} />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/products" element={<ProductListPage />} />
-                <Route path="/cart" element={<Cart cart={cart} />} />
                 <Route
-                    path="/checkout"
-                    element={
-                        <Checkout cart={cart} order={order} error={error} />
-                    }
+                    path="/product/:productSlug/:productId/"
+                    element={<ProductDetailpage />}
                 />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route
                     path="/login"
                     element={
                         auth.authenticated ? <Navigate to="/" /> : <LoginPage />
                     }
                 />
-                <Route path="/register" element={auth.authenticated ? <Navigate to="/" /> : <RegisterPage />} />
+                <Route
+                    path="/register"
+                    element={
+                        auth.authenticated ? (
+                            <Navigate to="/" />
+                        ) : (
+                            <RegisterPage />
+                        )
+                    }
+                />
             </Routes>
         </>
     );

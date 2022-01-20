@@ -1,4 +1,6 @@
+export { default as Layout } from './Layout/Layout';
 export { default as Navbar } from './Navbar/Navbar';
+export { default as Breadcrumb } from './Breadcrumb/Breadcrumb';
 export { default as LoginForm } from './LoginForm/LoginForm';
 export { default as RegisterForm } from './RegisterForm/RegisterForm';
 export { default as Products } from './Products/Products';

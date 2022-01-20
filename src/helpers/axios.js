@@ -1,4 +1,6 @@
 import axios from "axios";
+import { store } from "../redux/store";
+import { logoutSuccess } from "../redux/authRedux";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 // const TOKEN =
@@ -14,5 +16,29 @@ export const publicRequest = axios.create({
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,
-  header: { token: `Bearer ${token}` },
+  headers: { Authorization: `Bearer ${token}` },
 });
+
+userRequest.interceptors.request.use((req) => {
+  const { auth } = store.getState();
+  if (auth.token) {
+      req.headers.Authorization = `Bearer ${auth.token}`;
+  }
+  return req;
+});
+
+userRequest.interceptors.response.use(
+  (res) => {
+      console.log(res);
+      return res;
+  },
+  (error) => {
+      console.log(error);
+      const { status } = error.response;
+      if (status === 500) {
+          localStorage.clear();
+          store.dispatch(logoutSuccess());
+      }
+      return Promise.reject(error);
+  }
+);

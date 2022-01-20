@@ -1,11 +1,19 @@
 import React from "react";
-import { Navbar, Products } from "../../components";
-import { Grid } from "@material-ui/core";
-const HomePage = ({ cart, onAddToCart }) => {
+import { Layout, Products } from "../../components";
+
+import useStyles from './styles';
+
+const HomePage = () => {
+    const classes = useStyles();
+
     return (
         <>
-            <Grid container justifyContent="center" spacing={4}></Grid>
-            <Products onAddToCart={onAddToCart} />
+            <Layout>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <Products />
+                </main>
+            </Layout>
         </>
     );
 };
