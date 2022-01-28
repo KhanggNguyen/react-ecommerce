@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Layout } from "../../components";
+import { Checkout, Layout } from "../../components";
 
 import useStyles from './styles';
 
@@ -12,6 +12,7 @@ const CheckoutPage = () => {
         <Layout>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
+                <Checkout />
             </main>
         </Layout>
     );

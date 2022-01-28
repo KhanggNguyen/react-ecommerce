@@ -16,7 +16,6 @@ const cartReducer = createSlice({
             state.updatingCart = true;
         },
         addToCartSuccess: (state, action) => {
-            console.log(action.payload);
             state.updatingCart = false;
             state.cartItems = action.payload.cartItems;
             state.totalItems = Object.keys(state.cartItems).length;
@@ -30,7 +29,10 @@ const cartReducer = createSlice({
             state.error = true;
             state.message = action.payload.error;
         },
-        resetCart: () => initialState,
+        resetCart: (state) => {
+            state.cartItems = {};
+            state.totalItems = 0;
+        },
     },
 });
 

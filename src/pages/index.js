@@ -4,3 +4,5 @@ export { default as RegisterPage } from './register/RegisterPage';
 export { default as ProductListPage } from './productList/ProductListPage'
 export { default as CheckoutPage } from './checkout/CheckoutPage';
 export { default as CartPage } from './cart/CartPage';
+export { default as OrderPage } from './order/OrderPage';
+export {default as OrderDetailPage } from './orderDetail/OrderDetailPage';

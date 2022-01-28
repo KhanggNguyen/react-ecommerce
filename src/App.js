@@ -1,26 +1,52 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { HomePage, LoginPage, RegisterPage, ProductListPage, CartPage, CheckoutPage } from "./pages";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import {
+    HomePage,
+    LoginPage,
+    RegisterPage,
+    ProductListPage,
+    CartPage,
+    CheckoutPage,
+    OrderDetailPage,
+} from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import ProductDetailpage from "./pages/productDetail/ProductDetailpage";
-import { isUserLoggedin, getAllCategory, getAllProducts, updateCartItems } from "./actions";
+import {
+    isUserLoggedin,
+    getAllCategory,
+    getAllProducts,
+    getAddress,
+    updateCartItems,
+} from "./actions";
+
+const PrivateOutlet = ({ authenticated }) => {
+    return authenticated ? <Outlet /> : <Navigate to="/login" />;
+};
 
 export const App = () => {
-    const cart = useSelector((state) => state.cart);
+    // const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
-    const category = useSelector((state) => state.category);
+    // const category = useSelector((state) => state.category);
+    // const user = useSelector( (state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!auth.authenticated) {
             dispatch(isUserLoggedin());
+            console.log(auth);
         }
         dispatch(getAllCategory());
         dispatch(getAllProducts());
         dispatch(updateCartItems());
-        console.log(auth);
-        console.log(category);
-        console.log(cart);
+        if(auth.authenticated){
+            dispatch(getAddress());
+            //console.log(`App.js GET user address `,  user);
+        }
+        
+        // console.log(auth);
+        // console.log(category);
+        // console.log(cart);
+        
     }, [auth.authenticated]);
 
     return (
@@ -33,7 +59,6 @@ export const App = () => {
                     element={<ProductDetailpage />}
                 />
                 <Route path="/cart" element={<CartPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route
                     path="/login"
                     element={
@@ -50,6 +75,22 @@ export const App = () => {
                         )
                     }
                 />
+
+                {/* Private Routes */}
+                <Route
+                    element={
+                        <PrivateOutlet
+                            authenticated={auth.currentUser && auth.token}
+                        />
+                    }
+                >
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    {/* <Route path="/order/" element={<Order />} /> */}
+                    <Route
+                        path="/order/:orderId"
+                        element={<OrderDetailPage />}
+                    />
+                </Route>
             </Routes>
         </>
     );

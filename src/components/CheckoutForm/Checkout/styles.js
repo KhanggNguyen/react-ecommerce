@@ -41,6 +41,12 @@ export default makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
   },
+  addressDetailContainer: {
+    margin: "10px 0"
+  },
+  addressDetailButton: {
+    padding: "10px 10px 10px 30px",
+  },
   divider: {
     margin: '20px 0',
   },

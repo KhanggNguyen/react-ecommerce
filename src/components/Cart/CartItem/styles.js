@@ -15,7 +15,7 @@ export default makeStyles( () => ({
     },
     price: {
         paddingTop: "50px",
-        width: "10%"
+        width: "20%"
     },
     buttons: {
         width: "20%",

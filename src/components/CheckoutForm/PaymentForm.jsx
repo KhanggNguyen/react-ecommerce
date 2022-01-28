@@ -1,101 +1,94 @@
-import React from "react";
-import {
-    Elements,
-    CardElement,
-    ElementsConsumer,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import { Typography, Button, Divider } from "@material-ui/core";
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import StripeCheckout from "react-stripe-checkout";
+import { Typography, Divider, Button } from "@material-ui/core";
 import Review from "./Review";
+import { getCartItems, isUserLoggedin } from "../../actions";
+import { userRequest } from "../../helpers/axios";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
 
-const PaymentForm = ({ checkoutToken, shippingData, backStep, nextStep, onCaptureCheckout }) => {
-    const handleSubmit = async (e, elements, stripe) => {
-        e.preventDefault();
+const PaymentForm = (props) => {
+    const dispatch = useDispatch();
+    const [stripeToken, setStripeToken] = useState(null);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const cart = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
 
-        if (!stripe || !elements) return;
-
-        const cardElement = elements.getElement(CardElement);
-
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: "card",
-            card: cardElement,
-        });
-
-        if (error) console.log(error);
-        else {
-            const orderData = {
-                line_items: checkoutToken.live.line_items,
-                customer: {
-                    firstname: shippingData.firstName,
-                    lastname: shippingData.lastName,
-                    email: shippingData.email,
-                },
-                shipping: {
-                    name: "Primary",
-                    street: shippingData.address,
-                    town_city: shippingData.city, 
-                    postal_zip_code: shippingData.postalCode,
-                    country: shippingData.shippingCountry
-                },
-                fulfillment: { shipping_method: shippingData.shippingOption},
-                payment: {
-                    gateway: 'stripe',
-                    stripe: {
-                        payment_method_id: paymentMethod.id
-                    }
-                }
-            };
-
-            onCaptureCheckout(checkoutToken.id, orderData);
-
-            nextStep();
-        }
+    const onToken = (token) => {
+        setStripeToken(token);
     };
 
-    return (
+    useEffect(() => {
+        const makeRequest = async () => {
+            try {
+                const res = await userRequest.post("/api/payment", {
+                    tokenId: stripeToken.id,
+                    amount: totalAmount,
+                });
+
+                if (res.status !== 200) {
+                    console.log(res.data);
+                    return;
+                }
+
+                console.log(res.data);
+
+                const items = Object.keys(cart.cartItems).map((key) => ({
+                    productId: key,
+                    payablePrice: cart.cartItems[key].price,
+                    purchasedQty: cart.cartItems[key].qty,
+                }));
+
+                const orderData = {
+                    totalAmount,
+                    items,
+                    paymentStatus: "pending",
+                    paymentType: "cod",
+                };
+
+                props.handleOrderConfirmation(orderData);
+            } catch {}
+        };
+
+        stripeToken && makeRequest();
+    }, [stripeToken, cart.cartItems]);
+
+    useEffect(() => {
+        if (!auth.authenticated) {
+            dispatch(isUserLoggedin());
+        }
+
+        const total =
+            cart.cartItems &&
+            Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                const { price, qty } = cart.cartItems[key];
+                return totalPrice + price * qty;
+            }, 0);
+
+        setTotalAmount(total);
+    }, [auth.authenticated]);
+
+    return totalAmount >0 && (
         <>
-            <Review checkoutToken={checkoutToken} />
+            <Review />
             <Divider />
             <Typography variant="h6" gutterBottom style={{ margin: "20px 0" }}>
                 Payment method
             </Typography>
-            <Elements stripe={stripePromise}>
-                <ElementsConsumer>
-                    {({ elements, stripe }) => (
-                        <form
-                            onSubmit={(e) => handleSubmit(e, elements, stripe)}
-                        >
-                            <CardElement />
-                            <br /> <br />
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Button variant="outlined" onClick={backStep}>
-                                    Back
-                                </Button>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    disabled={!stripe}
-                                    color="primary"
-                                >
-                                    Pay{" "}
-                                    {
-                                        checkoutToken.live.subtotal
-                                            .formatted_with_symbol
-                                    }
-                                </Button>
-                            </div>
-                        </form>
-                    )}
-                </ElementsConsumer>
-            </Elements>
+            <StripeCheckout
+                name="Simple Shop"
+                image="%PUBLIC_URL%/ecommerce-logo.png"
+                description={`Your total is ${totalAmount}€`}
+                amount={`${ totalAmount > 0 ? totalAmount*100 : null}`}
+                token={onToken}
+                currency="EUR"
+                stripeKey={KEY}
+            >
+                <Button variant="contained" color="primary">
+                    Pay {totalAmount}
+                </Button>
+            </StripeCheckout>
         </>
     );
 };

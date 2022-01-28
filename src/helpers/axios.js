@@ -29,11 +29,9 @@ userRequest.interceptors.request.use((req) => {
 
 userRequest.interceptors.response.use(
   (res) => {
-      console.log(res);
       return res;
   },
   (error) => {
-      console.log(error);
       const { status } = error.response;
       if (status === 500) {
           localStorage.clear();

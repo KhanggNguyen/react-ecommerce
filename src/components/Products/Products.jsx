@@ -62,7 +62,7 @@ const Products = ({ categoryId }) => {
                 </Grid>
             </Grid>
             <Grid container justifyContent="flex-start" spacing={4}>
-                {products?.length &&
+                {products?.length ?
                     products.map((product, index) => (
                         <Grid
                             item
@@ -74,7 +74,7 @@ const Products = ({ categoryId }) => {
                         >
                             <Product key={index} product={product} />
                         </Grid>
-                    ))}
+                    )) : null}
             </Grid>
         </>
     );

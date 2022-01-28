@@ -9,7 +9,7 @@ import CardItem from "./CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems, addToCart, removeCartItem } from "../../actions";
 
-const Cart = () => {
+const Cart = (props) => {
     const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
 
@@ -23,7 +23,7 @@ const Cart = () => {
     }, [cart.cartItems]);
 
     useEffect(() => {
-        if (auth.authenticated) {
+        if (auth.authenticated && !props.onlyCartItems) {
             dispatch(getCartItems());
         }
     }, [auth.authenticated]);
@@ -52,7 +52,7 @@ const Cart = () => {
             </Typography>
         );
     };
-
+    
     const FilledCart = () => {
         return (
             <>
@@ -79,10 +79,9 @@ const Cart = () => {
                     <div>
                         <Button
                             className={classes.emptyButton}
-                            size="large"
                             type="button"
                             variant="contained"
-                            color="secondary"
+                            color="default"
                             onClick={() => console.log("empty cart")}
                         >
                             Empty Cart
@@ -91,10 +90,9 @@ const Cart = () => {
                             component={Link}
                             to="/checkout"
                             className={classes.checkoutButton}
-                            size="large"
                             type="button"
                             variant="contained"
-                            color="secondary"
+                            color="primary"
                         >
                             Checkout
                         </Button>
@@ -104,14 +102,60 @@ const Cart = () => {
         );
     };
 
+    const OnlyCartItems = () => {
+        return (
+            <>
+                {Object.keys(cartItems).map((key, index) => (
+                    <Grid key={index}>
+                        <CardItem
+                            onlyCartItems={true}
+                            item={cartItems[key]}
+                            onQtyIncrement={handleQtyIncrement}
+                            onQtyDecrement={handleQtyDecrement}
+                            onRemoveFromCart={handleRemoveFromCart}
+                        />
+                    </Grid>
+                ))}
+                <div className={classes.cardDetails}>
+                    <div>
+                        <Button
+                            className={classes.emptyButton}
+                            type="button"
+                            variant="contained"
+                            color="default"
+                            onClick={() => props.backStep()}
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            className={classes.checkoutButton}
+                            type="button"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                                props.handleOrderSummary(true);
+                                props.nextStep();
+                            }}
+                        >
+                            Continue
+                        </Button>
+                    </div>
+                </div>
+            </>
+        );
+    };
+
+    if (props.onlyCartItems) return <OnlyCartItems />;
+
     return (
         <Container>
             <div className={classes.toolbar} />
-            <Typography variant="h3" className={classes.title}>
-                Shopping cart
-            </Typography>
             {!cartItems && Object.keys(cartItems).length === 0 ? (
-                <EmptyCart />
+                (
+                    <Typography variant="h3" className={classes.title}>
+                        Shopping cart
+                    </Typography>
+                ) && <EmptyCart />
             ) : (
                 <FilledCart />
             )}

@@ -6,6 +6,7 @@ import {
     addToCartFailure,
     removeCartItemFailure,
     resetCart,
+    // resetCart,
 } from "../redux/cartRedux";
 
 export const getCartItems = () => {
@@ -34,7 +35,7 @@ export const addToCart = (product, newQty = 1) => {
             : 1;
 
         let newCartItems = {};
-        Object.keys(cartItems).map((key, index) => {
+        Object.keys(cartItems).map((key) => {
             if (key !== product._id) newCartItems[key] = cartItems[key];
             else newCartItems[key] = { ...product, qty };
         });
@@ -97,7 +98,6 @@ export const removeCartItem = (payload) => {
                 if (key !== payload.productId)
                     newCartItems[key] = cartItems[key];
             });
-            console.log(payload);
             localStorage.setItem("cart", JSON.stringify(newCartItems));
             dispatch(addToCartSuccess({ cartItems: newCartItems }));
         }
@@ -124,8 +124,7 @@ export const updateCartItems = () => {
 
             if (cartItems) {
                 const payload = {
-                    cartItems: Object.keys(cartItems).map((key, index) => {
-                        console.log(cartItems[key]._id);
+                    cartItems: Object.keys(cartItems).map((key) => {
                         return {
                             quantity: cartItems[key].qty,
                             product: cartItems[key]._id,
@@ -148,10 +147,15 @@ export const updateCartItems = () => {
             }
         } else {
             if (cartItems) {
-                console.log(cartItems);
                 localStorage.setItem("cart", JSON.stringify(cartItems));
                 dispatch(addToCartSuccess({ cartItems }));
             }
         }
     };
 };
+
+export const emptyCartItems = () => {
+    return async (dispatch) => {
+        dispatch(resetCart());
+    }
+}
