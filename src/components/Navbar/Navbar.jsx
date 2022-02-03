@@ -100,6 +100,12 @@ const Navbar = () => {
                             <Typography variant="body2">Profile</Typography>
                         </MenuItem>
                         <MenuItem
+                            key='Orders'
+                            onClick={handleProfile}
+                        >
+                            <Typography variant="body2">My orders</Typography>
+                        </MenuItem>
+                        <MenuItem
                             key='logout'
                             onClick={handleLogout}
                         >
@@ -143,7 +149,7 @@ const Navbar = () => {
                                 key='register'
                                 onClick={handleCloseNavMenu}
                             >
-                                <Typography variant="h6">Register</Typography>
+                                <Typography variant="body2">Register</Typography>
                             </MenuItem>
                             <MenuItem
                                 component={Link}
@@ -151,7 +157,7 @@ const Navbar = () => {
                                 key='login'
                                 onClick={handleCloseNavMenu}
                             >
-                                <Typography variant="h6">Login</Typography>
+                                <Typography variant="body2">Login</Typography>
                             </MenuItem>
                     </Menu>
                 </Box>

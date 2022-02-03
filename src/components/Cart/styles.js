@@ -17,10 +17,9 @@ export default makeStyles((theme) => ({
         textDecoration: "none",
     },
     cardDetails: {
-        display: "flex",
-        marginTop: "10%",
         width: "100%",
-        bottom: "0",
-        justifyContent: "space-between",
+        marginTop: "auto",
+        margin:0,
+        bottom: 0,
     },
 }));

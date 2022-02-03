@@ -24,7 +24,7 @@ export default makeStyles((theme) => ({
     },
     thumbnail: {
         width: "80%",
-        height: "40vh",
+        height: "400px",
         overflow: "hidden",
         textAlign: "center",
         border: "1px solid #f0f0f0",

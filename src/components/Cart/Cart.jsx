@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { Container, Typography, Button, Grid } from "@material-ui/core";
+import { Container, Typography, Button, Grid, Box } from "@material-ui/core";
 
 import useStyles from "./styles";
 
 import CardItem from "./CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems, addToCart, removeCartItem } from "../../actions";
+import {
+    getCartItems,
+    addToCart,
+    removeCartItem,
+    emptyCartItems,
+} from "../../actions";
 
 const Cart = (props) => {
     const cart = useSelector((state) => state.cart);
@@ -45,44 +50,86 @@ const Cart = (props) => {
         dispatch(removeCartItem({ productId: _id }));
     };
 
+    const handleEmptyCart = () => {
+        dispatch(emptyCartItems());
+    };
+
     const EmptyCart = () => {
         return (
-            <Typography variant="subtitle1">
-                You have no items in your shopping cart.
-            </Typography>
+            <Box
+                style={{
+                    display: "flex",
+                    flexGrow: 1,
+                    flexDirection: "column",
+                }}
+            >
+                <Grid container spacing={3} justifyContent="center">
+                    <Grid item xs={12} sm={12}>
+                        <Typography variant="subtitle1" align="center">
+                            You have no items in your shopping cart.
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3} justifyContent="center">
+                    <Grid item xs={12} sm={2}>
+                        <Button
+                            component={Link}
+                            to="/"
+                            type="button"
+                            variant="contained"
+                        >
+                            Back to home
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Box>
         );
     };
-    
+
     const FilledCart = () => {
         return (
             <>
-                {cartItems &&
-                    Object.keys(cartItems).map((key, index) => (
-                        <Grid key={index}>
-                            <CardItem
-                                item={cartItems[key]}
-                                onQtyIncrement={handleQtyIncrement}
-                                onQtyDecrement={handleQtyDecrement}
-                                onRemoveFromCart={handleRemoveFromCart}
-                            />
-                        </Grid>
-                    ))}
-                <div className={classes.cardDetails}>
-                    <Typography variant="h4">
-                        Subtotal:{" "}
-                        {cartItems &&
-                            Object.keys(cartItems).reduce((totalPrice, key) => {
-                                const { price, qty } = cartItems[key];
-                                return totalPrice + price * qty;
-                            }, 0)}
-                    </Typography>
-                    <div>
+                <Grid container>
+                    {cartItems &&
+                        Object.keys(cartItems).map((key, index) => (
+                            <Grid item key={index} xs={12} sm={12}>
+                                <CardItem
+                                    item={cartItems[key]}
+                                    onQtyIncrement={handleQtyIncrement}
+                                    onQtyDecrement={handleQtyDecrement}
+                                    onRemoveFromCart={handleRemoveFromCart}
+                                />
+                            </Grid>
+                        ))}
+                </Grid>
+
+                <Grid
+                    container
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    className={classes.cardDetails}
+                >
+                    <Grid item xs={12} sm={6}>
+                        <Typography variant="h4">
+                            Subtotal:{" "}
+                            {cartItems &&
+                                Object.keys(cartItems).reduce(
+                                    (totalPrice, key) => {
+                                        const { price, qty } = cartItems[key];
+                                        return totalPrice + price * qty;
+                                    },
+                                    0
+                                )}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
                         <Button
                             className={classes.emptyButton}
                             type="button"
                             variant="contained"
                             color="default"
-                            onClick={() => console.log("empty cart")}
+                            onClick={() => handleEmptyCart()}
                         >
                             Empty Cart
                         </Button>
@@ -93,11 +140,12 @@ const Cart = (props) => {
                             type="button"
                             variant="contained"
                             color="primary"
+                            disabled={cart.totalItems === 0}
                         >
                             Checkout
                         </Button>
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
             </>
         );
     };
@@ -150,7 +198,7 @@ const Cart = (props) => {
     return (
         <Container>
             <div className={classes.toolbar} />
-            {!cartItems && Object.keys(cartItems).length === 0 ? (
+            {cart.totalItems === 0 ? (
                 (
                     <Typography variant="h3" className={classes.title}>
                         Shopping cart

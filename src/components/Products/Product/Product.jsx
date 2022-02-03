@@ -26,8 +26,9 @@ const Product = ({ product }) => {
     };
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} sx={{ maxWidth: 345 }}>
             <CardMedia
+                component="img"
                 className={classes.media}
                 image={
                     product.productPictures?.length
@@ -44,7 +45,7 @@ const Product = ({ product }) => {
                 >
                     {product.category.name}
                 </Typography>
-                <Typography variant="body2" gutterBottom paragraph={true}>
+                <Typography variant="body2" gutterBottom noWrap>
                     {product.name}
                 </Typography>
                 <Typography

@@ -66,24 +66,6 @@ const ProductDetailpage = () => {
                                 />
                             </div>
                         </Grid>
-                        <Grid container spacing={2}>
-                            <Grid item xs={8}>
-                                <IconButton
-                                    className={classes.iconButton}
-                                    onClick={handleAddToCart}
-                                >
-                                    <AddShoppingCart /> Add to cart
-                                </IconButton>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <IconButton
-                                    className={classes.iconButton}
-                                    onClick={() => console.log("buy now")}
-                                >
-                                    <Shop /> Buy now
-                                </IconButton>
-                            </Grid>
-                        </Grid>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Grid className={classes.breed}>
@@ -141,6 +123,24 @@ const ProductDetailpage = () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
+                            <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <IconButton
+                                    className={classes.iconButton}
+                                    onClick={handleAddToCart}
+                                >
+                                    <AddShoppingCart /> Add to cart
+                                </IconButton>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <IconButton
+                                    className={classes.iconButton}
+                                    onClick={() => console.log("buy now")}
+                                >
+                                    <Shop /> Buy now
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

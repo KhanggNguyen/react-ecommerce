@@ -1,26 +1,28 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles( () => ({
+    root:{
+        maxWidth: "100%",
+    },
     media:{
-        width: "150px",
-        height: "100px",
-        margin: "20px"
+        maxWidth: "100%",
+        maxHeight: "100px",
+        margin: "10px",
+        objectFit: 'contain'
     },
     title:{
         fontWeight: "500",
         fontSize: "1em",
         float: "none",
-        paddingTop: "50px",
-        width: "40%"
+        top: "50%"
     },
     price: {
-        paddingTop: "50px",
-        width: "20%"
+        margin: 0,
+        top: "50%",
     },
     buttons: {
-        width: "20%",
         display: "flex",
-        paddingTop: "55px",
+        top: "50%",
         height: "1em",
         alignItems: 'center',
         "& *": {

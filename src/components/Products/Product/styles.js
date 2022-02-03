@@ -2,12 +2,13 @@ import { makeStyles } from "@material-ui/core";
 
 export default makeStyles(() => ({
     root: {
+        height: "400px",
         maxWidth: "100%",
     },
     media: {
-        height: "auto",
-        paddingTop: '100%',
-        objectFit: 'cover'
+        maxWidth: "100%",
+        maxHeight: "50%",
+        objectFit: 'contain'
     },
     productAction: {
         backgroundColor: "White",

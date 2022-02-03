@@ -20,7 +20,7 @@ import { LockOutlined } from "@material-ui/icons";
 import useStyles from "./styles";
 
 const LoginForm = () => {
-    const { isFetching, error, message } = useSelector((state) => state.auth);
+    const { isFetching} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -33,7 +33,6 @@ const LoginForm = () => {
             password: data.get("password"),
         };
         // eslint-disable-next-line no-console
-        console.log(userInput);
 
         if (userInput.email && userInput.password) {
             dispatch(login(userInput));

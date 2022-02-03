@@ -43,7 +43,7 @@ const Category = React.forwardRef(
         ) : (
             <MenuItem
                 component={Link}
-                to={`/products?category=${category.slug.toLowerCase()}`}
+                to={`/products?category=${category.slug}`}
                 onClick={handleCloseElNav}
                 ref={ref}
             >

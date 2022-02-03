@@ -80,7 +80,7 @@ export const removeCartItem = (payload) => {
             auth,
             cart: { cartItems },
         } = store.getState();
-        
+
         if (auth.authenticated) {
             const res = await userRequest.post(
                 `/api/user/cart/removeItem`,
@@ -156,6 +156,12 @@ export const updateCartItems = () => {
 
 export const emptyCartItems = () => {
     return async (dispatch) => {
+        const { auth } = store.getState();
+
+        localStorage.removeItem("cart");
         dispatch(resetCart());
-    }
-}
+        if (auth.authenticated) {
+            await userRequest.post("/api/user/cart/emptyCartItems");
+        }
+    };
+};

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
-import { Typography, Divider, Button } from "@material-ui/core";
+import { Typography, Divider, Button, Grid } from "@material-ui/core";
 import Review from "./Review";
 import { getCartItems, isUserLoggedin } from "../../actions";
 import { userRequest } from "../../helpers/axios";
@@ -69,27 +69,48 @@ const PaymentForm = (props) => {
         setTotalAmount(total);
     }, [auth.authenticated]);
 
-    return totalAmount >0 && (
-        <>
-            <Review />
-            <Divider />
-            <Typography variant="h6" gutterBottom style={{ margin: "20px 0" }}>
-                Payment method
-            </Typography>
-            <StripeCheckout
-                name="Simple Shop"
-                image="%PUBLIC_URL%/ecommerce-logo.png"
-                description={`Your total is ${totalAmount}€`}
-                amount={`${ totalAmount > 0 ? totalAmount*100 : null}`}
-                token={onToken}
-                currency="EUR"
-                stripeKey={KEY}
-            >
-                <Button variant="contained" color="primary">
-                    Pay {totalAmount}
-                </Button>
-            </StripeCheckout>
-        </>
+    return (
+        totalAmount > 0 && (
+            <>
+                <Review />
+                <Divider />
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    style={{ margin: "20px 0" }}
+                >
+                    Payment method
+                </Typography>
+                <StripeCheckout
+                    name="Simple Shop"
+                    image="../ecommerce-logo.png"
+                    description={`Your total is ${totalAmount}€`}
+                    amount={`${totalAmount > 0 ? totalAmount * 100 : null}`}
+                    token={onToken}
+                    currency="EUR"
+                    stripeKey={KEY}
+                >
+                    <Button variant="contained" color="primary">
+                        Pay {totalAmount}
+                    </Button>
+                </StripeCheckout>
+                
+                <Grid container>
+                    <Grid item xs={12} sm={12}>
+                        <Typography variant="caption" color="error">
+                            Please use this card number for testing : 4242 4242 4242 4242
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid item xs={12} sm={12}>
+                        <Typography variant="caption" color="error">
+                            Please use date and code: 04/24 and 4242
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </>
+        )
     );
 };
 

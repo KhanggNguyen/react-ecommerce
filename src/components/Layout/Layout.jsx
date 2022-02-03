@@ -1,8 +1,7 @@
 import React from "react";
 import { Box, createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { Navbar } from "..";
-
+import { Navbar, Footer } from "..";
 
 const mdTheme = createTheme();
 
@@ -12,13 +11,18 @@ const Layout = (props) => {
             <Box
                 style={{
                     display: "flex",
-                    flexGrow: 1,
-                    height: "100vh",
+                    flexDirection: "column",
+                    flexWrap: "wrap",
+                    minHeight: "100vh",
                     overflow: "auto",
+                    margin: "0",
+                    padding: "0",
                 }}
             >
                 <Navbar title={props.title} />
                 {props.children}
+
+                <Footer />
             </Box>
         </ThemeProvider>
     );
