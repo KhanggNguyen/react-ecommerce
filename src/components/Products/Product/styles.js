@@ -3,10 +3,8 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles(() => ({
     root: {
         height: "400px",
-        maxWidth: "100%",
     },
     media: {
-        maxWidth: "100%",
         maxHeight: "50%",
         objectFit: 'contain'
     },

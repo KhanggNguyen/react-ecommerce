@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { Grid, Button } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { Grid } from "@material-ui/core";
 import Product from "./Product/Product";
-import FilterSelect from "../FilterSelect/FilterSelect";
-import useStyles from "./styles";
 
+import useStyles from './styles';
 
-const sizeVariantss = ["XS", "S", "M", "L", "XL"];
-const colorVariantss = ["BLACK", "BLUE", "GRAY", "WHITE", "PINK"];
-
-const Products = ({ categoryId }) => {
+const Products = () => {
     const product = useSelector((state) => state.product);
-    const [category, setCategory] = useState("");
     const [products, setProducts] = useState([]);
-    const [sizes, setSizes] = useState([]);
-    const [sizeVariants, setSizeVariants] = useState([]);
-    const [colors, setColors] = useState([]);
-    const [colorVariants, setColorVariants] = useState([]);
-
     const classes = useStyles();
-
-    const handleApplyFilterChanges = async () => {};
-
     useEffect(() => {
         
 
@@ -62,16 +48,17 @@ const Products = ({ categoryId }) => {
                     </Button>
                 </Grid>
             </Grid> */}
-            <Grid container justifyContent="flex-start" spacing={4}>
+            <Grid container justifyContent="center">
                 {products?.length
                     ? products.map((product, index) => (
                           <Grid
                               item
                               key={product._id}
-                              xs={12}
-                              sm={6}
-                              md={4}
+                              xs={11}
+                              sm={4}
+                              md={3}
                               lg={3}
+                              className={classes.productGrid}
                           >
                               <Product key={index} product={product} />
                           </Grid>

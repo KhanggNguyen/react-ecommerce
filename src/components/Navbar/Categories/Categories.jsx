@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { Button, Menu, } from "@material-ui/core";
+import { Button, Menu } from "@material-ui/core";
 
 import Category from "./Category/Category";
 import { useSelector } from "react-redux";
 
 const Categories = () => {
-    const category = useSelector( (state) => state.category);
+    const category = useSelector((state) => state.category);
 
     const [categories, setCategories] = useState(null);
+
     const [anchorElementNav, setAnchorElementNav] = useState(null);
-    
+
+    const [menuPosition, setMenuPosition] = useState(null);
+
     const handleOpenElNav = (e) => {
         setAnchorElementNav(e.currentTarget);
+
+        if (menuPosition) return;
+
+        e.preventDefault();
+
+        setMenuPosition({
+            top: e.pageY,
+            left: e.pageX,
+        });
     };
 
     const handleCloseElNav = () => {
         setAnchorElementNav(null);
+    };
+
+    const handleItemClick = () => {
+        setMenuPosition(null);
     };
 
     const renderCategories = (categoryList) => {
@@ -23,12 +39,19 @@ const Categories = () => {
 
         for (let cate of categoryList) {
             cats.push(
-                <Category key={cate._id} category={cate} onCloseElNav={handleCloseElNav} renderCategories={renderCategories}/>
+                <Category
+                    key={cate._id}
+                    category={cate}
+                    menuPosition={menuPosition}
+                    onItemClick={handleItemClick}
+                    onCloseElNav={handleCloseElNav}
+                    renderCategories={renderCategories}
+                />
             );
         }
         return cats;
     };
-    
+
     useEffect(() => {
         setCategories(category.categories);
     }, []);
@@ -45,22 +68,15 @@ const Categories = () => {
             </Button>
             <Menu
                 id="menu-cats"
-                anchorEl={anchorElementNav}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                }}
-                keepMounted
-                getContentAnchorEl={null}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-                open={Boolean(anchorElementNav)}
-                onClose={handleCloseElNav}
+                open={!!menuPosition}
+                onClose={() => setMenuPosition(null)}
+                anchorReference="anchorPosition"
+                anchorPosition={menuPosition}
+                MenuListProps={{ onMouseLeave: handleItemClick }}
             >
                 {categories && renderCategories(categories)}
             </Menu>
+            {/* <CustomMenu options={categories} href={`/products?category=`}/> */}
         </>
     );
 };

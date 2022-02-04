@@ -26,7 +26,7 @@ const Product = ({ product }) => {
     };
 
     return (
-        <Card className={classes.root} sx={{ maxWidth: 345 }}>
+        <Card className={classes.root}>
             <CardMedia
                 component="img"
                 className={classes.media}

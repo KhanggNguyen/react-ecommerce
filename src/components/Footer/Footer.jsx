@@ -35,7 +35,7 @@ const Footer = () => {
             >
                 <Grid container sx={{ direction: {xs: "column", md: "row"}}}>
                     <Grid item xs={12} sm={3} className={classes.gridColumn}>
-                        <Grid container direction="column" alignItems="left">
+                        <Grid container direction="column" alignItems="flex-start">
                             <Grid item style={{ margin: "0 0 15px 0" }}>
                                 <Typography
                                     variant="h5"
@@ -80,7 +80,7 @@ const Footer = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={3} className={classes.gridColumn}>
+                    <Grid item xs={12} sm={12} md={3} className={classes.gridColumn}>
                         <Typography
                             variant="h5"
                             noWrap
@@ -129,7 +129,7 @@ const Footer = () => {
                         <Grid
                             container
                             direction="row"
-                            alignItems="left"
+                            alignItems="flex-start"
                             className={classes.contactGrid}
                         >
                             <Grid item style={{ marginRight: "5px" }}>
@@ -170,7 +170,7 @@ const Footer = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={3} className={classes.gridColumn}>
+                    <Grid item xs={12} sm={12} md={3} className={classes.gridColumn}>
                         <Typography
                             variant="h5"
                             noWrap
@@ -235,7 +235,7 @@ const Footer = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={3} className={classes.gridColumn}>
+                    <Grid item xs={12} sm={12} md={3} className={classes.gridColumn}>
                         <Typography
                             variant="h5"
                             noWrap
@@ -256,7 +256,7 @@ const Footer = () => {
                                 columnspacing={10}
                                 className={classes.contactGrid}
                             >
-                                <Grid item xs={12} sm={9}>
+                                <Grid item xs={9} sm={9}>
                                     <TextField
                                         name="email"
                                         type="email"
@@ -265,7 +265,7 @@ const Footer = () => {
                                         className={classes.newsletterTextField}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={1}>
+                                <Grid item xs={3} sm={1}>
                                     <IconButton type="submit">
                                         <Send
                                             fontSize="large"

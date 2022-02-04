@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { getAllProducts, getProductsByCategory } from "../../actions";
 import { Layout, Products } from "../../components";
 
 import useStyles from './styles';
 
 const HomePage = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.get("category")) {
+            dispatch(getProductsByCategory(searchParams.get("category")));
+        }else{
+            dispatch(getAllProducts());
+        }
+    }, [searchParams]);
 
     return (
         <>

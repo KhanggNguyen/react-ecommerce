@@ -1,16 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles((theme) => ({
-  filtersGrid:{
-    margin: '10px 10px',
-  },
+export default makeStyles(() => ({
   loadingProgress: {
     position: "absolute",
     top: 400,
     left: 400,
     zIndex: 1
   },
-  buttonApplyChanges:{
-    textAlign: "right"
+  productGrid:{
+    padding: "10px",
   }
 }));

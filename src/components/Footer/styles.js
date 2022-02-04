@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles(() => ({
     root: {
         minWidth: "100%",
-        minHeight: "auto",
         clear: "both",
         position: "relative",
         margin: 0,
@@ -15,9 +14,6 @@ export default makeStyles(() => ({
         display: "flex",
         flexDirection: "row",
         marginTop: "20px",
-    },
-    gridColumn: {
-        height: "100%",
     },
     title: {
         textDecoration: "none",
@@ -45,8 +41,8 @@ export default makeStyles(() => ({
             color: "gray",
         },
     },
-    newsletterTextField:{
+    newsletterTextField: {
         backgroundColor: "white",
         width: "100%",
-    }
+    },
 }));

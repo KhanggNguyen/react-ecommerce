@@ -1,4 +1,3 @@
-import { getCartItems } from ".";
 import { userRequest } from "../helpers/axios";
 import {
     addUserAddressFailure,
@@ -61,8 +60,8 @@ export const addAddress = (payload) => {
     };
 };
 
-export const deleteAddress = (payload) => {
-    return async (dispatch) => {
+export const deleteAddress = () => {
+    return async () => {
         //delete address
     }
 }

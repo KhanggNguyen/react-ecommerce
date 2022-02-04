@@ -3,18 +3,23 @@ import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Layout, Products } from "../../components";
 
-import { getProductsByCategory } from "../../actions";
-import useStyles from './styles';
+import { getAllProducts, getProductsByCategory } from "../../actions";
+import useStyles from "./styles";
 
 const ProductListPage = () => {
     const classes = useStyles();
 
     const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
-    useEffect(() => {
-        dispatch(getProductsByCategory(searchParams.get("category")));
 
+    useEffect(() => {
+        if (searchParams.get("category")) {
+            dispatch(getProductsByCategory(searchParams.get("category")));
+        }else{
+            dispatch(getAllProducts());
+        }
     }, [searchParams]);
+
     return (
         <>
             <Layout>

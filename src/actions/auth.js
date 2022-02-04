@@ -1,4 +1,4 @@
-import { publicRequest, userRequest } from "../helpers/axios";
+import { publicRequest } from "../helpers/axios";
 import {
     loginStart,
     loginSuccess,
