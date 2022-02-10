@@ -132,14 +132,6 @@ const ProductDetailpage = () => {
                                     <AddShoppingCart /> Add to cart
                                 </IconButton>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <IconButton
-                                    className={classes.iconButton}
-                                    onClick={() => console.log("buy now")}
-                                >
-                                    <Shop /> Buy now
-                                </IconButton>
-                            </Grid>
                         </Grid>
                         </Grid>
                     </Grid>

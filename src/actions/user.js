@@ -27,8 +27,10 @@ export const getAddress = () => {
             const {
                 userAddress: { address },
             } = res.data;
-            
-            dispatch(getUserAddressSuccess({address}));
+
+            dispatch(getUserAddressSuccess({ address }));
+        } else if (res.status === 204) {
+            dispatch(getUserAddressSuccess({ address: [] }));
         } else {
             const { error } = res.data;
 
@@ -50,8 +52,8 @@ export const addAddress = (payload) => {
             const {
                 address: { address },
             } = res.data;
-            
-            dispatch(addUserAddressSuccess({address}));
+
+            dispatch(addUserAddressSuccess({ address }));
         } else {
             const { error } = res.data;
 
@@ -63,8 +65,8 @@ export const addAddress = (payload) => {
 export const deleteAddress = () => {
     return async () => {
         //delete address
-    }
-}
+    };
+};
 
 export const getOrders = () => {
     return async (dispatch) => {
@@ -74,7 +76,7 @@ export const getOrders = () => {
 
         if (res.status === 200) {
             const { orders } = res.data;
-            dispatch(getUserOrderSuccess(orders));
+            dispatch(getUserOrderSuccess({orders}));
         } else {
             const { error } = res.data;
             dispatch(getUserOrderFailure(error));

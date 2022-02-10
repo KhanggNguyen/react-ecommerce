@@ -22,7 +22,6 @@ const userSlice = createSlice({
         },
         getUserAddressSuccess: (state, action) => {
             state.isFetching = false;
-            console.log(`GET USER ADDRESS SUCCESS `, action.payload.address);
             state.address = action.payload.address;
         },
         getUserAddressFailure: (state, action) => {
@@ -37,7 +36,6 @@ const userSlice = createSlice({
         },
         addUserAddressSuccess: (state, action) => {
             state.isFetching = false;
-            console.log(action.payload);
             state.address = action.payload.address;
         },
         addUserAddressFailure: (state, action) => {
@@ -52,6 +50,7 @@ const userSlice = createSlice({
         },
         getUserOrderSuccess: (state, action) => {
             state.orderFetching = false;
+            console.log(action.payload);
             state.orders = action.payload.orders;
         },
         getUserOrderFailure: (state, action) => {

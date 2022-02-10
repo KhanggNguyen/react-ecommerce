@@ -8,6 +8,7 @@ import {
     CartPage,
     CheckoutPage,
     OrderDetailPage,
+    OrderPage,
 } from "./pages";
 import { useDispatch, useSelector } from "react-redux";
 import ProductDetailpage from "./pages/productDetail/ProductDetailpage";
@@ -17,6 +18,7 @@ import {
     getAllProducts,
     getAddress,
     updateCartItems,
+    getOrders,
 } from "./actions";
 
 const PrivateOutlet = ({ authenticated }) => {
@@ -38,15 +40,15 @@ export const App = () => {
         dispatch(getAllCategory());
         dispatch(getAllProducts());
         dispatch(updateCartItems());
-        if(auth.authenticated){
+        if (auth.authenticated) {
             dispatch(getAddress());
             //console.log(`App.js GET user address `,  user);
         }
-        
+        dispatch(getOrders());
+
         // console.log(auth);
         // console.log(category);
         // console.log(cart);
-        
     }, [auth.authenticated]);
 
     return (
@@ -85,7 +87,7 @@ export const App = () => {
                     }
                 >
                     <Route path="/checkout" element={<CheckoutPage />} />
-                    {/* <Route path="/order/" element={<Order />} /> */}
+                    <Route path="/order" element={<OrderPage />} />
                     <Route
                         path="/order/:orderId"
                         element={<OrderDetailPage />}

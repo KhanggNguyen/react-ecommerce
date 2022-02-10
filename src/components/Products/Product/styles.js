@@ -5,6 +5,7 @@ export default makeStyles(() => ({
         height: "400px",
     },
     media: {
+        minHeight: "200px",
         maxHeight: "50%",
         objectFit: 'contain'
     },

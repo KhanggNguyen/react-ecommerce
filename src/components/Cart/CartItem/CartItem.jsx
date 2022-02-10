@@ -35,7 +35,7 @@ const CartItem = ({
             columnspacing={{ xs: 1, sm: 3, md: 6 }}
             className={classes.root}
         >
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={4} sm={3} className={classes.imageDiv}>
                 <Box
                     component="img"
                     alt={name}
@@ -43,12 +43,12 @@ const CartItem = ({
                     src={img}
                 />
             </Grid>
-            <Grid item xs={4} sm={3}>
+            <Grid item xs={4} sm={3} className={classes.centerDivVertically}>
                 <Typography variant="h6" className={classes.title}>
                     {name}
                 </Typography>
             </Grid>
-            <Grid item xs={4} sm={6}>
+            <Grid item xs={4} sm={6} className={classes.centerDivVertically}>
                 {!onlyCartItems ? (
                     <Grid container direction="row">
                         <Grid item xs={12} sm={6}>

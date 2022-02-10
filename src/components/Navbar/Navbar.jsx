@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems, logout } from '../../actions';
+import { getCartItems, logout } from "../../actions";
 import {
     AppBar,
     Container,
@@ -27,7 +27,7 @@ import { useEffect } from "react";
 
 const Navbar = () => {
     const auth = useSelector((state) => state.auth);
-    const cart = useSelector( (state) => state.cart);
+    const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
     const [anchorElementNav, setAnchorElementNav] = useState(null);
@@ -52,24 +52,18 @@ const Navbar = () => {
         setAnchorElementUser(null);
     };
 
-    const handleProfile = (e) => {
-        e.preventDefault();
-
-        handleCloseUserMenu();
-    }
-
     const handleLogout = () => {
         handleCloseUserMenu();
         dispatch(logout());
-    }
-    
+    };
+
     const renderLoggedInMenu = () => {
         return (
             <>
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar
+                            <Avatar
                                 alt="User"
                                 src="/static/images/avatar/2.jpg"
                             />
@@ -92,23 +86,27 @@ const Navbar = () => {
                         open={Boolean(anchorElementUser)}
                         onClose={handleCloseUserMenu}
                     >
-                        <Typography variant="body2" className={classes.username}>{`Hello ${auth.currentUser.firstName}`}</Typography>
+                        <Typography
+                            variant="body2"
+                            className={classes.username}
+                        >{`Hello ${auth.currentUser.firstName}`}</Typography>
                         <MenuItem
-                            key='Profile'
-                            onClick={handleProfile}
+                            key="Profile"
+                            component={Link}
+                            to="/profile"
+                            onClick={handleCloseNavMenu}
                         >
                             <Typography variant="body2">Profile</Typography>
                         </MenuItem>
                         <MenuItem
-                            key='Orders'
-                            onClick={handleProfile}
+                            key="Orders"
+                            component={Link}
+                            to="/order"
+                            onClick={handleCloseNavMenu}
                         >
                             <Typography variant="body2">My orders</Typography>
                         </MenuItem>
-                        <MenuItem
-                            key='logout'
-                            onClick={handleLogout}
-                        >
+                        <MenuItem key="logout" onClick={handleLogout}>
                             <Typography variant="body2">Logout</Typography>
                         </MenuItem>
                     </Menu>
@@ -144,27 +142,27 @@ const Navbar = () => {
                         onClose={handleCloseUserMenu}
                     >
                         <MenuItem
-                                component={Link}
-                                to='/register'
-                                key='register'
-                                onClick={handleCloseNavMenu}
-                            >
-                                <Typography variant="body2">Register</Typography>
-                            </MenuItem>
-                            <MenuItem
-                                component={Link}
-                                to='/login'
-                                key='login'
-                                onClick={handleCloseNavMenu}
-                            >
-                                <Typography variant="body2">Login</Typography>
-                            </MenuItem>
+                            component={Link}
+                            to="/register"
+                            key="register"
+                            onClick={handleCloseNavMenu}
+                        >
+                            <Typography variant="body2">Register</Typography>
+                        </MenuItem>
+                        <MenuItem
+                            component={Link}
+                            to="/login"
+                            key="login"
+                            onClick={handleCloseNavMenu}
+                        >
+                            <Typography variant="body2">Login</Typography>
+                        </MenuItem>
                     </Menu>
                 </Box>
             </>
         );
     };
-    
+
     return (
         <>
             <AppBar position="fixed" className={classes.appBar} color="inherit">
@@ -279,7 +277,9 @@ const Navbar = () => {
                                 </IconButton>
                             </div>
                         )}
-                        {auth.authenticated ? renderLoggedInMenu() : renderNonLoggedInMenu()}
+                        {auth.authenticated
+                            ? renderLoggedInMenu()
+                            : renderNonLoggedInMenu()}
                     </Toolbar>
                 </Container>
             </AppBar>

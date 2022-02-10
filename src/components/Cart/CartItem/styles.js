@@ -3,6 +3,10 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles( () => ({
     root:{
         maxWidth: "100%",
+        minHeight: "124px",
+    },
+    imageDiv:{
+        
     },
     media:{
         maxWidth: "100%",
@@ -10,11 +14,14 @@ export default makeStyles( () => ({
         margin: "10px",
         objectFit: 'contain'
     },
+    centerDivVertically:{
+        position: "relative",
+        top:"50%",
+        transform: "translateY(50%)"
+    },
     title:{
         fontWeight: "500",
         fontSize: "1em",
-        float: "none",
-        top: "50%"
     },
     price: {
         margin: 0,
