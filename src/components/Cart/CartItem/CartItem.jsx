@@ -32,7 +32,7 @@ const CartItem = ({
         <Grid
             container
             direction="row"
-            columnspacing={{ xs: 1, sm: 3, md: 6 }}
+            columnspacing={{ xs: 1}}
             className={classes.root}
         >
             <Grid item xs={4} sm={3} className={classes.imageDiv}>

@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../../actions/product";
-import { addToCart } from '../../actions/cart';
+import { addToCart } from "../../actions/cart";
 import { Breadcrumb, Layout } from "../../components";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 
 import useStyles from "./styles";
-import { AddShoppingCart, Shop, StarRate } from "@material-ui/icons";
+import { AddShoppingCart, StarRate } from "@material-ui/icons";
 
 const breadcrumbs = [
     {
@@ -34,7 +34,7 @@ const ProductDetailpage = () => {
     const handleAddToCart = () => {
         const { _id, name, price } = product.productDetail;
         const img = product.productDetail.productPictures[0].img;
-        dispatch(addToCart({ _id, name, price, img}));
+        dispatch(addToCart({ _id, name, price, img }));
     };
 
     if (!product.productDetail) {
@@ -71,9 +71,7 @@ const ProductDetailpage = () => {
                         <Grid className={classes.breed}>
                             <Breadcrumb
                                 breadcrumbs={breadcrumbs}
-                                currentPage={
-                                    product.productDetail.name
-                                }
+                                currentPage={product.productDetail.name}
                             />
                         </Grid>
                         <Grid className={classes.productDetail}>
@@ -124,15 +122,24 @@ const ProductDetailpage = () => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <IconButton
-                                    className={classes.iconButton}
-                                    onClick={handleAddToCart}
-                                >
-                                    <AddShoppingCart /> Add to cart
-                                </IconButton>
+                                <Grid item xs={12} sm={6}>
+                                    {product.productDetail.quantity > 0 ? (
+                                        <IconButton
+                                            className={classes.iconButton}
+                                            onClick={handleAddToCart}
+                                        >
+                                            <AddShoppingCart /> Add to cart
+                                        </IconButton>
+                                    ) : (
+                                        <Typography
+                                            variant="body2"
+                                            style={{ color: "red" }}
+                                        >
+                                            Out of stock
+                                        </Typography>
+                                    )}
+                                </Grid>
                             </Grid>
-                        </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

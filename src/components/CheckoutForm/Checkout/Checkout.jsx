@@ -9,7 +9,6 @@ import {
     // CircularProgress,
     Divider,
     Button,
-    Radio,
     Box,
     Grid,
 } from "@material-ui/core";
@@ -25,7 +24,6 @@ import Cart from "../../Cart/Cart";
 const steps = ["Shipping address", "Order Summary", "Payment details", "Confirmation"];
 
 const Checkout = () => {
-    const cart = useSelector((state) => state.cart);
     const user = useSelector((state) => state.user);
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
@@ -34,8 +32,6 @@ const Checkout = () => {
     const [newAddress, setNewAddress] = useState(false);
     const [address, setAddress] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
-    const [orderSummary, setOrderSummary] = useState(false);
-    const [orderConfirmation, setOrderConfirmation] = useState(false);
     const [paymentOption, setPaymentOption] = useState(false);
     const [confirmOrder, setConfirmOrder] = useState(false);
 
@@ -73,11 +69,9 @@ const Checkout = () => {
     };
 
     /* TODO */
-    const handleDeleteAddress = (addr) => {};
+    // const handleDeleteAddress = (addr) => {};
 
     const handleUserOrderConfirmation = () => {
-        setOrderConfirmation(true);
-        setOrderSummary(false);
         setConfirmOrder(true);
         setPaymentOption(true);
         dispatch(emptyCartItems());
@@ -181,12 +175,12 @@ const Checkout = () => {
                         >
                             Edit
                         </Button>
-                        <Button
+                        {/* <Button
                             variant="outlined"
                             onClick={() => console.log("handle delete.")}
                         >
                             Delete
-                        </Button>
+                        </Button> */}
                     </Grid>
                 </Grid>
                 <Grid container spacing={3}>
@@ -253,7 +247,6 @@ const Checkout = () => {
                     onlyCartItems={true}
                     backStep={backStep}
                     nextStep={nextStep}
-                    handleOrderSummary={setOrderSummary}
                 />
             );
         } else if (activeStep === 2) {

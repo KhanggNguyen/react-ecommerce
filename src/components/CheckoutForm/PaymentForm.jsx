@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import StripeCheckout from "react-stripe-checkout";
 import { Typography, Divider, Button, Grid } from "@material-ui/core";
 import Review from "./Review";
-import { getCartItems, isUserLoggedin } from "../../actions";
+import { isUserLoggedin } from "../../actions";
 import { userRequest } from "../../helpers/axios";
 
 const KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
@@ -48,7 +48,9 @@ const PaymentForm = (props) => {
                 };
 
                 props.handleOrderConfirmation(orderData);
-            } catch {}
+            } catch(error) {
+                console.log(error);
+            }
         };
 
         stripeToken && makeRequest();

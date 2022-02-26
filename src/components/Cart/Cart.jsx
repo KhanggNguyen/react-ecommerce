@@ -92,7 +92,7 @@ const Cart = (props) => {
                 <Grid container>
                     {cartItems &&
                         Object.keys(cartItems).map((key, index) => (
-                            <Grid item key={index} xs={12} sm={12}>
+                            <Grid item key={index} xs={11} sm={11}>
                                 <CardItem
                                     item={cartItems[key]}
                                     onQtyIncrement={handleQtyIncrement}
@@ -120,14 +120,14 @@ const Cart = (props) => {
                                         return totalPrice + price * qty;
                                     },
                                     0
-                                )}
+                                )}€
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid alignItems="center" item xs={12} sm={4}>
                         <Button
                             className={classes.emptyButton}
                             type="button"
-                            variant="contained"
+                            variant="outlined"
                             color="default"
                             onClick={() => handleEmptyCart()}
                         >
@@ -138,7 +138,7 @@ const Cart = (props) => {
                             to="/checkout"
                             className={classes.checkoutButton}
                             type="button"
-                            variant="contained"
+                            variant="outlined"
                             color="primary"
                             disabled={cart.totalItems === 0}
                         >
@@ -181,7 +181,6 @@ const Cart = (props) => {
                             variant="contained"
                             color="primary"
                             onClick={() => {
-                                props.handleOrderSummary(true);
                                 props.nextStep();
                             }}
                         >

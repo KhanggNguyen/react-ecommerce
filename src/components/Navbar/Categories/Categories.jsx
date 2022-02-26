@@ -8,27 +8,20 @@ const Categories = () => {
     const category = useSelector((state) => state.category);
 
     const [categories, setCategories] = useState(null);
-
-    const [anchorElementNav, setAnchorElementNav] = useState(null);
-
     const [menuPosition, setMenuPosition] = useState(null);
 
     const handleOpenElNav = (e) => {
-        setAnchorElementNav(e.currentTarget);
 
         if (menuPosition) return;
 
         e.preventDefault();
 
         setMenuPosition({
-            top: e.pageY,
+            top: 50,
             left: e.pageX,
         });
     };
 
-    const handleCloseElNav = () => {
-        setAnchorElementNav(null);
-    };
 
     const handleItemClick = () => {
         setMenuPosition(null);
@@ -44,7 +37,6 @@ const Categories = () => {
                     category={cate}
                     menuPosition={menuPosition}
                     onItemClick={handleItemClick}
-                    onCloseElNav={handleCloseElNav}
                     renderCategories={renderCategories}
                 />
             );

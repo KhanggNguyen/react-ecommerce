@@ -24,7 +24,6 @@ const RegisterForm = () => {
     const [lastName, setLastName] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const [submitted, setSubmitted] = useState(false);
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -63,7 +62,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" className={classes.content}>
             <div className={classes.toolbar} />
             <CssBaseline />
             <Box
@@ -77,7 +76,7 @@ const RegisterForm = () => {
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                     <LockOutlined />
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography variant="h4">
                     Sign up
                 </Typography>
                 <Box
@@ -185,6 +184,7 @@ const RegisterForm = () => {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        className={classes.button}
                     >
                         Sign Up
                     </Button>
@@ -205,8 +205,9 @@ const RegisterForm = () => {
                     </Snackbar>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
+                            <span>Already have an account?</span> 
+                            <Link href="/login" variant="body2">
+                                {" Sign in"}
                             </Link>
                         </Grid>
                     </Grid>

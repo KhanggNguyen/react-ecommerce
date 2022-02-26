@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems, logout } from "../../actions";
+import { logout } from "../../actions";
 import {
     AppBar,
     Container,
@@ -23,7 +23,6 @@ import Logo from "../../assets/logo.png";
 import useStyles from "./styles";
 
 import Categories from "./Categories/Categories";
-import { useEffect } from "react";
 
 const Navbar = () => {
     const auth = useSelector((state) => state.auth);
@@ -90,14 +89,6 @@ const Navbar = () => {
                             variant="body2"
                             className={classes.username}
                         >{`Hello ${auth.currentUser.firstName}`}</Typography>
-                        <MenuItem
-                            key="Profile"
-                            component={Link}
-                            to="/profile"
-                            onClick={handleCloseNavMenu}
-                        >
-                            <Typography variant="body2">Profile</Typography>
-                        </MenuItem>
                         <MenuItem
                             key="Orders"
                             component={Link}

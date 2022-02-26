@@ -22,8 +22,12 @@ export default makeStyles( () => ({
     title:{
         fontWeight: "500",
         fontSize: "1em",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
     },
     price: {
+        fontSize: "1rem",
         margin: 0,
         top: "50%",
     },

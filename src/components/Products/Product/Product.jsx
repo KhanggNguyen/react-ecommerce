@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../../actions";
 import {
     Card,
@@ -63,13 +63,20 @@ const Product = ({ product }) => {
                 />
             </CardContent>
             <CardActions disableSpacing className={classes.cardAction}>
-                <IconButton
-                    className={classes.productAction}
-                    aria-label="Add to cart"
-                    onClick={handleAddToCart}
-                >
-                    <AddShoppingCart className={classes.actionsIcon} />
-                </IconButton>
+                { product.quantity > 0 ? (
+                    <IconButton
+                        className={classes.productAction}
+                        aria-label="Add to cart"
+                        onClick={handleAddToCart}
+                    >
+                        <AddShoppingCart className={classes.actionsIcon} />
+                    </IconButton>
+                ) : (
+                    <Typography variant="body2" style={{color: "red"}}>
+                        Out of stock.
+                    </Typography>
+                )}
+
                 <IconButton
                     component={Link}
                     to={`/product/${product.slug}/${product._id}`}

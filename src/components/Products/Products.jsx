@@ -15,6 +15,8 @@ const Products = () => {
         setProducts(product.products);
     }, [product.products]);
 
+    
+
     return (
         <>
             {/* <Grid container justifyContent="center" spacing={2}>

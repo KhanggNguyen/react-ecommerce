@@ -1,7 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrders } from "../../actions";
+import { useSelector } from "react-redux";
 
 import { Layout } from "../../components";
 import CardUi from "../../components/CardUI/CardUi";
@@ -9,7 +8,6 @@ import useStyles from "./styles";
 
 const OrderPage = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
     const [orders, setOrders] = useState([]);
 

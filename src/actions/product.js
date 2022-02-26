@@ -9,7 +9,7 @@ import {
 export const getAllProducts = () => {
     return async (dispatch) => {
         const res = await publicRequest.get(`/api/product/`);
-
+        console.log(res.data);
         if (res.status === 200) {
             dispatch(getProducts(res.data));
         }
