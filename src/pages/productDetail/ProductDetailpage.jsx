@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../../actions/product";
 import { addToCart } from "../../actions/cart";
-import { Breadcrumb, Layout } from "../../components";
+import { Breadcrumb, Layout, Snackbar } from "../../components";
 import { Grid, IconButton, Typography } from "@material-ui/core";
-
 import useStyles from "./styles";
 import { AddShoppingCart, StarRate } from "@material-ui/icons";
 
@@ -24,6 +23,7 @@ const ProductDetailpage = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const product = useSelector((state) => state.product);
+    const [open, setOpen] = useState(false);
 
     const classes = useStyles();
 
@@ -31,10 +31,17 @@ const ProductDetailpage = () => {
         dispatch(getProductById(productId));
     }, []);
 
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") return;
+
+        setOpen(false);
+    };
+
     const handleAddToCart = () => {
         const { _id, name, price } = product.productDetail;
         const img = product.productDetail.productPictures[0].img;
         dispatch(addToCart({ _id, name, price, img }));
+        setOpen(true);
     };
 
     if (!product.productDetail) {
@@ -143,6 +150,12 @@ const ProductDetailpage = () => {
                         </Grid>
                     </Grid>
                 </Grid>
+                <Snackbar
+                    open={open}
+                    handleClose={handleClose}
+                    severity="success"
+                    message="Add to cart sucessfully"
+                />
             </main>
         </Layout>
     );
