@@ -21,8 +21,8 @@ export const getAddress = () => {
     return async (dispatch) => {
         dispatch(getUserAddressStart());
 
-        const res = await userRequest.post(`/api/user/address`);
-        console.log(res.data);
+        const res = await userRequest.get(`/api/address`);
+        
         if (res.status === 200) {
             const {
                 userAddress: { address },

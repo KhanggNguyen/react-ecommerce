@@ -12,7 +12,7 @@ const categorySlice = createSlice({
     initialState,
     reducers: {
         getCategories: (state, action) => {
-            state.categories = action.payload.categoryList;
+            state.categories = action.payload.categories;
         }
     }
 });

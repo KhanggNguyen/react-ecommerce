@@ -13,8 +13,8 @@ const ProductListPage = () => {
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        if (searchParams.get("category")) {
-            dispatch(getProductsByCategory(searchParams.get("category")));
+        if (searchParams.get("categoryId")) {
+            dispatch(getProductsByCategory(searchParams.get("categoryId")));
         }else{
             dispatch(getAllProducts());
         }

@@ -19,7 +19,7 @@ const Category = React.forwardRef(
         ) : (
             <MenuItem
                 component={Link}
-                to={`/products?category=${category._id}`}
+                to={`/products?categoryId=${category._id}`}
                 onClick={onItemClick}
                 ref={ref}
             >

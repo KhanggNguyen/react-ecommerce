@@ -9,9 +9,10 @@ import CardItem from "./CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getCartItems,
-    addToCart,
+    // addToCart,
     removeCartItem,
     emptyCartItems,
+    updateCart,
 } from "../../actions";
 
 const Cart = (props) => {
@@ -23,27 +24,16 @@ const Cart = (props) => {
 
     const [cartItems, setCartItems] = useState({});
 
-    useEffect(() => {
-        setCartItems(cart.cartItems);
-    }, [cart.cartItems]);
-
-    useEffect(() => {
-        if (auth.authenticated && !props.onlyCartItems) {
-            dispatch(getCartItems());
-        }
-    }, [auth.authenticated]);
-
-    const handleQtyIncrement = (_id, qty) => {
-        console.log(cartItems[_id]);
+    const handleQtyIncrement = (_id) => {
         const { name, price, img } = cartItems[_id];
 
-        dispatch(addToCart({ _id, name, price, img }, qty));
+        dispatch(updateCart({ _id, name, price, img }, 1));
     };
 
-    const handleQtyDecrement = (_id, qty) => {
+    const handleQtyDecrement = (_id) => {
         const { name, price, img } = cartItems[_id];
 
-        dispatch(addToCart({ _id, name, price, img }, qty));
+        dispatch(updateCart({ _id, name, price, img }, -1));
     };
 
     const handleRemoveFromCart = (_id) => {
@@ -53,6 +43,17 @@ const Cart = (props) => {
     const handleEmptyCart = () => {
         dispatch(emptyCartItems());
     };
+
+    useEffect(() => {
+        setCartItems(cart.cartItems);
+    }, [cart.cartItems]);
+
+    useEffect(() => {
+        if (auth.authenticated && !props.onlyCartItems) {
+            console.log("test Cart.jsx");
+            dispatch(getCartItems());
+        }
+    }, [auth.authenticated]);
 
     const EmptyCart = () => {
         return (
@@ -120,7 +121,8 @@ const Cart = (props) => {
                                         return totalPrice + price * qty;
                                     },
                                     0
-                                )}€
+                                )}
+                            €
                         </Typography>
                     </Grid>
                     <Grid alignItems="center" item xs={12} sm={4}>

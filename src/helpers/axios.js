@@ -7,36 +7,38 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 //   JSON.parse(JSON.parse(localStorage.getItem("persist:root")).user).currentUser
 //     .accessToken || "";
 
-const auth = JSON.parse(localStorage.getItem("persist:root"))?.auth;
-const token = auth && JSON.parse(auth).token;
+// const auth = JSON.parse(localStorage.getItem("persist:root"))?.auth;
+// const token = auth && JSON.parse(auth).token;
 
 export const publicRequest = axios.create({
-  baseURL: BASE_URL,
+    baseURL: BASE_URL,
+    withCredentials: true,
 });
 
 export const userRequest = axios.create({
-  baseURL: BASE_URL,
-  headers: { Authorization: `Bearer ${token}` },
+    baseURL: BASE_URL,
+    // headers: { Authorization: `Bearer ${token}` },
+    withCredentials: true,
 });
 
 userRequest.interceptors.request.use((req) => {
-  const { auth } = store.getState();
-  if (auth.token) {
-      req.headers.Authorization = `Bearer ${auth.token}`;
-  }
-  return req;
+    const { auth } = store.getState();
+    if (auth.token) {
+        req.headers.Authorization = `Bearer ${auth.token}`;
+    }
+    return req;
 });
 
 userRequest.interceptors.response.use(
-  (res) => {
-      return res;
-  },
-  (error) => {
-      const { status } = error.response;
-      if (status === 500) {
-          localStorage.clear();
-          store.dispatch(logoutSuccess());
-      }
-      return Promise.reject(error);
-  }
+    (res) => {
+        return res;
+    },
+    (error) => {
+        const { status } = error.response;
+        if (status === 500) {
+            localStorage.clear();
+            store.dispatch(logoutSuccess());
+        }
+        return Promise.reject(error);
+    }
 );

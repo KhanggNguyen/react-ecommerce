@@ -30,7 +30,7 @@ const Product = ({ product }) => {
 
     const handleAddToCart = () => {
         const { _id, name, price } = product;
-        const img = product.productPictures[0].img;
+        const img = product.productPictures[0]?.img;
         dispatch(addToCart({ _id, name, price, img }));
         setOpen(true);
     };

@@ -13,7 +13,6 @@ const CartItem = ({
     onRemoveFromCart,
 }) => {
     const classes = useStyles();
-    console.log(item);
     const [qty, setQty] = useState(item.qty);
     const { _id, name, price, img } = item;
 
@@ -32,7 +31,7 @@ const CartItem = ({
         <Grid
             container
             direction="row"
-            columnspacing={{ xs: 1}}
+            columnspacing={{ xs: 1 }}
             className={classes.root}
         >
             <Grid item xs={4} sm={3} className={classes.imageDiv}>
@@ -53,7 +52,11 @@ const CartItem = ({
                     <Grid container direction="row">
                         <Grid item xs={12} sm={6}>
                             {" "}
-                            <Typography variant="h6" align="center" className={classes.price}>
+                            <Typography
+                                variant="h6"
+                                align="center"
+                                className={classes.price}
+                            >
                                 {price} €
                             </Typography>
                         </Grid>

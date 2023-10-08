@@ -18,7 +18,7 @@ export const getAllProducts = () => {
 
 export const getProductsByCategory = (categoryId) => {
     return async (dispatch) => {
-        const res = await publicRequest.get(`/api/products/${categoryId}`);
+        const res = await publicRequest.get(`/api/product?categoryId=${categoryId}`);
 
         if (res.status === 200) {
             dispatch(getProducts(res.data));
@@ -27,10 +27,11 @@ export const getProductsByCategory = (categoryId) => {
 };
 
 export const getProductById = (productId) => {
+    console.log(productId)
     return async (dispatch) => {
         dispatch(getProductDetailByIdStart());
-        const res = await publicRequest.get(`/api/product/${productId}`);
 
+        const res = await publicRequest.get(`/api/product?productId=${productId}}`);
         if (res.status === 200) {
             dispatch(getProductDetailByIdSuccess(res.data));
         } else {

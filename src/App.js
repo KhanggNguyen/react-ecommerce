@@ -16,9 +16,9 @@ import {
     isUserLoggedin,
     getAllCategory,
     getAllProducts,
-    getAddress,
+    // getAddress,
     updateCartItems,
-    getOrders,
+    // getOrders,
 } from "./actions";
 
 const PrivateOutlet = ({ authenticated }) => {
@@ -28,23 +28,21 @@ const PrivateOutlet = ({ authenticated }) => {
 export const App = () => {
     // const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
+    console.log(auth);
     // const category = useSelector((state) => state.category);
     // const user = useSelector( (state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!auth.authenticated) {
-            dispatch(isUserLoggedin());
-            console.log(auth);
-        }
+        dispatch(isUserLoggedin());
         dispatch(getAllCategory());
         dispatch(getAllProducts());
         dispatch(updateCartItems());
-        if (auth.authenticated) {
-            dispatch(getAddress());
-            //console.log(`App.js GET user address `,  user);
-        }
-        dispatch(getOrders());
+
+        // dispatch(getAddress());
+        //console.log(`App.js GET user address `,  user);
+
+        
 
         // console.log(auth);
         // console.log(category);

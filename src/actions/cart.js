@@ -3,27 +3,78 @@ import { store } from "../redux/store";
 import {
     addToCartStart,
     addToCartSuccess,
-    addToCartFailure,
+    updateCartStart,
+    updateCartSuccess,
+    updateCartFailure,
     removeCartItemFailure,
     resetCart,
+    getCartStart,
+    getCartSuccess,
+    getCartFailure,
     // resetCart,
 } from "../redux/cartRedux";
 
 export const getCartItems = () => {
     return async (dispatch) => {
-        dispatch(addToCartStart());
+        dispatch(getCartStart());
 
-        const res = await userRequest.post(`/api/user/getCartItems`);
-
+        const res = await userRequest.get(`/api/cart`);
+        console.log(res);
         if (res.status === 200) {
-            dispatch(addToCartSuccess(res.data));
+            dispatch(getCartSuccess(res.data));
         } else {
-            dispatch(addToCartFailure(res.data.error));
+            dispatch(getCartFailure(res.data.error));
         }
     };
 };
 
 export const addToCart = (product, newQty = 1) => {
+    return async (dispatch) => {
+        const {
+            cart: { cartItems },
+            auth,
+        } = store.getState();
+
+        // const qty = cartItems[product._id]
+        //     ? parseInt(cartItems[product._id].qty + newQty)
+        //     : 1;
+
+        let newCartItems = {};
+        Object.keys(cartItems).map((key) => {
+            if (key !== product._id) newCartItems[key] = cartItems[key];
+            // else newCartItems[key] = { ...product, qty };
+            else newCartItems[key] = { ...product, newQty };
+        });
+
+        if (!newCartItems[product._id]) {
+            newCartItems[product._id] = {
+                ...product,
+                newQty,
+            };
+        }
+
+        if (auth.authenticated) {
+            dispatch(addToCartStart());
+
+            const payload = {
+                productId: product._id,
+                quantity: newQty,
+            };
+
+            const res = await userRequest.post(`/api/cart`, payload);
+
+            if (res.status === 201) {
+                console.log("test AddToCartItems");
+                dispatch(getCartItems());
+            }
+        } else {
+            localStorage.setItem("cart", JSON.stringify(newCartItems));
+            dispatch(addToCartSuccess({ cartItems: newCartItems }));
+        }
+    };
+};
+
+export const updateCart = (product, newQty = 1) => {
     return async (dispatch) => {
         const {
             cart: { cartItems },
@@ -48,28 +99,24 @@ export const addToCart = (product, newQty = 1) => {
         }
 
         if (auth.authenticated) {
-            dispatch(addToCartStart());
+            dispatch(updateCartStart());
 
             const payload = {
-                cartItems: [
-                    {
-                        product: product._id,
-                        quantity: qty,
-                    },
-                ],
+                productId: product._id,
+                flag: newQty,
             };
 
-            const res = await userRequest.post(
-                `/api/user/cart/addtocart`,
-                payload
-            );
+            const res = await userRequest.put(`/api/cart`, payload);
 
-            if (res.status === 201) {
-                dispatch(getCartItems());
+            if (res.status >= 200 && res.status <= 400) {
+                // dispatch(getCartItems());
+                dispatch(updateCartSuccess(res.data));
+            } else {
+                dispatch(updateCartFailure());
             }
         } else {
             localStorage.setItem("cart", JSON.stringify(newCartItems));
-            dispatch(addToCartSuccess({ cartItems: newCartItems }));
+            dispatch(updateCartSuccess({ cartItems: newCartItems }));
         }
     };
 };
@@ -82,12 +129,19 @@ export const removeCartItem = (payload) => {
         } = store.getState();
 
         if (auth.authenticated) {
-            const res = await userRequest.post(
-                `/api/user/cart/removeItem`,
-                payload
+            const res = await userRequest.delete(
+                `/api/cart/removeItem`,
+                { data: payload },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
             );
+            console.log(res);
 
             if (res.status === 202) {
+                console.log("test RemoveCartItem");
                 dispatch(getCartItems());
             } else {
                 dispatch(removeCartItemFailure(res.data.error));
@@ -121,34 +175,13 @@ export const updateCartItems = () => {
 
         if (auth.authenticated) {
             localStorage.removeItem("cart");
-
-            if (cartItems) {
-                const payload = {
-                    cartItems: Object.keys(cartItems).map((key) => {
-                        return {
-                            quantity: cartItems[key].qty,
-                            product: cartItems[key]._id,
-                        };
-                    }),
-                };
-
-                if (Object.keys(cartItems).length) {
-                    const res = await userRequest.post(
-                        `/api/user/cart/addtocart`,
-                        payload
-                    );
-
-                    if (res.status === 201) {
-                        dispatch(getCartItems());
-                    }
-                }
-            } else {
-                dispatch(getCartItems());
-            }
+            dispatch(getCartItems());
+            console.log("test UpdateCartItems");
         } else {
             if (cartItems) {
                 localStorage.setItem("cart", JSON.stringify(cartItems));
                 dispatch(addToCartSuccess({ cartItems }));
+                console.log("test");
             }
         }
     };
