@@ -8,7 +8,7 @@ const CustomTextField = ({
     value,
     inputProps,
     type,
-    placeholder,
+    placeholder
 }) => {
     const { control } = useFormContext();
 

@@ -29,12 +29,15 @@ const AddressForm = ({ selectedAddress }) => {
         
         const payload = {
             address: {
-                ...data,
-                _id: selectedAddress ? selectedAddress._id : null
+                ...data
             },
         };
-
-        dispatch(addAddress(payload));
+        let method = "post";
+        if(selectedAddress){
+            payload.address = {...payload.address, _id:selectedAddress._id }
+            method = "put";
+        }
+        dispatch(addAddress(payload, method));
     };
 
     return (
@@ -52,21 +55,21 @@ const AddressForm = ({ selectedAddress }) => {
                         <CustomTextField
                             name="name"
                             label="Your name"
-                            value={selectedAddress?.name}
+                            value={selectedAddress?.name || ""}
                             inputProps={{ required: true }}
                             helperText={"Name should not be empty."}
                         />
                         <CustomTextField
                             name="address"
                             label="Address"
-                            value={selectedAddress?.address}
+                            value={selectedAddress?.address || ""}
                             inputProps={{ required: true }}
                             helperText={"Address should not be empty."}
                         />
                         <CustomTextField
                             name="city"
                             label="City"
-                            value={selectedAddress?.city}
+                            value={selectedAddress?.city || ""}
                             inputProps={{ required: true }}
                             helperText={"City should not be empty."}
                         />
@@ -74,34 +77,34 @@ const AddressForm = ({ selectedAddress }) => {
                             name="mobile"
                             label="Mobile"
                             type="tel"
-                            value={selectedAddress?.mobile}
+                            value={selectedAddress?.mobile || '0742424242'}
                             inputProps={{
                                 required: true,
                                 pattern:
-                                    "[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}",
+                                    "[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}",
                                 minLength: 14,
                             }}
-                            placeholder="07 42 42 42 42"
+                            placeholder="0742424242"
                             helperText={"Phone number should not be empty."}
                         />
                         <CustomTextField
                             name="postalCode"
                             label="Postal Code"
-                            value={selectedAddress?.postalCode}
+                            value={selectedAddress?.postalCode || ""}
                             inputProps={{ required: true }}
                             helperText={"Postal code should not be empty."}
                         />
                         <CustomTextField
                             name="department"
                             label="Department"
-                            value={selectedAddress?.department}
+                            value={selectedAddress?.department || ""}
                             inputProps={{ required: true }}
                             helperText={"Department should not be empty."}
                         />
                         <CustomTextField
                             name="addressType"
                             label="Address Type"
-                            value={selectedAddress?.addressType}
+                            value={selectedAddress?.addressType || ""}
                             inputProps={{ required: true }}
                             helperText={"Address type should not be empty."}
                         />

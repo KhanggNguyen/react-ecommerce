@@ -80,7 +80,7 @@ export const App = () => {
                 <Route
                     element={
                         <PrivateOutlet
-                            authenticated={auth.currentUser && auth.token}
+                            authenticated={auth.currentUser && auth.authenticated}
                         />
                     }
                 >

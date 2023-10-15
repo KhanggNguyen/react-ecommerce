@@ -22,13 +22,9 @@ export const getAddress = () => {
         dispatch(getUserAddressStart());
 
         const res = await userRequest.get(`/api/address`);
-        
-        if (res.status === 200) {
-            const {
-                userAddress: { address },
-            } = res.data;
 
-            dispatch(getUserAddressSuccess({ address }));
+        if (res.status === 200) {
+            dispatch(getUserAddressSuccess( res.data.elements ));
         } else if (res.status === 204) {
             dispatch(getUserAddressSuccess({ address: [] }));
         } else {
@@ -39,21 +35,19 @@ export const getAddress = () => {
     };
 };
 
-export const addAddress = (payload) => {
+export const addAddress = (payload, method = "post") => {
     return async (dispatch) => {
         dispatch(addUserAddressStart());
 
-        const res = await userRequest.post(
-            `/api/user/address/create`,
-            payload.address
-        );
+        let res = null;
+        if (method === "post") {
+            res = await userRequest.post(`/api/address/`, payload.address);
+        } else if (method === "put") {
+            res = await userRequest.put(`/api/address/`, payload.address);
+        }
 
-        if (res.status === 201) {
-            const {
-                address: { address },
-            } = res.data;
-
-            dispatch(addUserAddressSuccess({ address }));
+        if (res.status >= 200 && res.status < 400) {
+            dispatch(addUserAddressSuccess(res.data.elements));
         } else {
             const { error } = res.data;
 
@@ -76,7 +70,7 @@ export const getOrders = () => {
 
         if (res.status === 200) {
             const { orders } = res.data;
-            dispatch(getUserOrderSuccess({orders}));
+            dispatch(getUserOrderSuccess({ orders }));
         } else {
             const { error } = res.data;
             dispatch(getUserOrderFailure(error));

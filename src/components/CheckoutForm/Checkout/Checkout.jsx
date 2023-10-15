@@ -1,56 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
 import {
+    Button,
     Paper,
-    Stepper,
     Step,
     StepLabel,
+    Stepper,
     Typography,
-    // CircularProgress,
-    Divider,
-    Button,
-    Box,
-    Grid,
 } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 
 import useStyles from "./styles";
 
-import AddressForm from "../AddressForm";
-import PaymentForm from "../PaymentForm";
 import { useDispatch, useSelector } from "react-redux";
-import { addOrder, emptyCartItems, getAddress, getCartItems } from "../../../actions";
+import {
+    addOrder,
+    emptyCartItems,
+    getAddress,
+    getCartItems,
+} from "../../../actions";
+import { getPaymentMethodList } from "../../../actions/stripe";
 import Cart from "../../Cart/Cart";
+import Addresses from "../Addresses";
+import PaymentForm from "../PaymentForm";
+import PaymentMethods from "../PaymentMethods";
+import StripeWrapper from "../StripeWrapper";
 
-const steps = ["Shipping address", "Order Summary", "Payment details", "Confirmation"];
+const steps = [
+    "Shipping address",
+    "Order Summary",
+    "Payment details",
+    "Confirmation",
+];
 
 const Checkout = () => {
     const user = useSelector((state) => state.user);
     const auth = useSelector((state) => state.auth);
+    // const payment = useSelector((state) => state.payment);
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const [newAddress, setNewAddress] = useState(false);
-    const [address, setAddress] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
+    // const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const [paymentMethods, setPaymentMethods] = useState([]);
     const [paymentOption, setPaymentOption] = useState(false);
     const [confirmOrder, setConfirmOrder] = useState(false);
 
     const [activeStep, setActiveStep] = useState(0);
-
-    /* EVENT HANDLER */
-
-    // const handleSubmitAddress = (data) => {
-    //     setSelectedAddress(data);
-    // };
-
-    // const handleSelectAddress = (addr) => {
-    //     const updatedAddress = address.map((item) =>
-    //         item._id === addr._id
-    //             ? { ...item, selected: true }
-    //             : { ...item, selected: false }
-    //     );
-    //     setAddress(updatedAddress);
-    // };
 
     const handleConfirmDeliveryAddress = (addr) => {
         setSelectedAddress(addr);
@@ -58,18 +53,10 @@ const Checkout = () => {
         nextStep();
     };
 
-    const handleEnableAddressEditForm = (addr) => {
-        const updatedAddress = address.map((item) =>
-            item._id === addr._id
-                ? { ...item, edit: !item.edit }
-                : { ...item, edit: false }
-        );
-
-        setAddress(updatedAddress);
+    const handleSelectPaymentMethod = (method) => {
+        setSelectedPaymentMethod(method);
+        //create intent
     };
-
-    /* TODO */
-    // const handleDeleteAddress = (addr) => {};
 
     const handleUserOrderConfirmation = () => {
         setConfirmOrder(true);
@@ -92,19 +79,8 @@ const Checkout = () => {
     useEffect(() => {
         auth.authenticated && dispatch(getAddress());
         auth.authenticated && dispatch(getCartItems());
+        auth.authenticated && dispatch(getPaymentMethodList());
     }, [auth.authenticated]);
-
-    useEffect(() => {
-        const address = user.address?.map((item) => {
-            return {
-                ...item,
-                selected: false,
-                edit: false,
-            };
-        });
-
-        setAddress(address);
-    }, [user.address]);
 
     useEffect(() => {
         if (confirmOrder && user.orderId) {
@@ -147,100 +123,9 @@ const Checkout = () => {
         </>;
     }
 
-    const Address = ({ addr }) => {
-        return (
-            <Box className={classes.addressDetailContainer}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={10}>
-                        <Box component="div">
-                            <Typography variant="body2">{addr.name}</Typography>
-                            <Typography variant="body2">
-                                {addr.addressType}
-                            </Typography>
-                            <Typography variant="body2">
-                                {addr.mobileNumber}
-                            </Typography>
-                        </Box>
-                        <Box component="div">
-                            <Typography variant="body2">
-                                {addr.address} <br />
-                                {`${addr.postalCode} - ${addr.department}`}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <Button
-                            variant="outlined"
-                            onClick={() => handleEnableAddressEditForm(addr)}
-                        >
-                            Edit
-                        </Button>
-                        {/* <Button
-                            variant="outlined"
-                            onClick={() => console.log("handle delete.")}
-                        >
-                            Delete
-                        </Button> */}
-                    </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={12}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleConfirmDeliveryAddress(addr)}
-                        >
-                            DELIVERY HERE
-                        </Button>
-                    </Grid>
-                </Grid>
-                {addr.edit ? <AddressForm selectedAddress={addr} /> : null}
-            </Box>
-        );
-    };
-
     const Form = () => {
         if (activeStep === 0) {
-            return (
-                <>
-                    {address?.map((item) => (
-                        <Address addr={item} key={item._id} />
-                    ))}
-                    <Divider />
-                    <Box className={classes.addressDetailContainer}>
-                        <Grid
-                            container
-                            spacing={3}
-                            columnspacing={{ xs: 1, sm: 2, md: 3 }}
-                        >
-                            <Grid item xs={12} sm={6}>
-                                {newAddress ? (
-                                    <Button
-                                        color="default"
-                                        variant="contained"
-                                        onClick={() => setNewAddress(false)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                ) : null}
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <Box display="flex" justifyContent="right">
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={() => setNewAddress(true)}
-                                    >
-                                        New Address
-                                    </Button>
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </Box>
-
-                    {newAddress ? <AddressForm /> : null}
-                </>
-            );
+            return <Addresses onSelect={handleConfirmDeliveryAddress} />;
         } else if (activeStep === 1) {
             return (
                 <Cart
@@ -251,6 +136,15 @@ const Checkout = () => {
             );
         } else if (activeStep === 2) {
             return (
+                <PaymentMethods
+                    backStep={backStep}
+                    nextStep={nextStep}
+                    paymentMethods={paymentMethods}
+                    onSelect={handleSelectPaymentMethod}
+                />
+            );
+        } else if (activeStep === 3) {
+            return (
                 <PaymentForm
                     paymentOption={paymentOption}
                     backStep={backStep}
@@ -258,10 +152,8 @@ const Checkout = () => {
                     handleOrderConfirmation={handleConfirmOrder}
                 />
             );
-        } else if (activeStep === 3) {
-            return (
-                "Confirmation"
-            )
+        } else if (activeStep === 4) {
+            return "Confirmation";
         }
     };
 
@@ -288,7 +180,9 @@ const Checkout = () => {
                         ))}
                     </Stepper>
 
-                    <Form />
+                    <StripeWrapper>
+                        <Form />
+                    </StripeWrapper>
                 </Paper>
             </main>
         </>
