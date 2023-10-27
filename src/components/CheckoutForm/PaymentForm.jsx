@@ -1,60 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import StripeCheckout from "react-stripe-checkout";
 import { Typography, Divider, Button, Grid } from "@material-ui/core";
 import Review from "./Review";
 import { isUserLoggedin } from "../../actions";
-import { userRequest } from "../../helpers/axios";
+import {
+    CardCvcElement,
+    useElements,
+    useStripe,
+} from "@stripe/react-stripe-js";
+import { confirmPayment } from "../../actions/stripe";
+import { Link } from "react-router-dom";
 
-const KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY;
-
-const PaymentForm = (props) => {
+const PaymentForm = ({ paymentMethod }) => {
+    const stripe = useStripe();
+    const elements = useElements();
     const dispatch = useDispatch();
-    const [stripeToken, setStripeToken] = useState(null);
+
+    const cardRef = useRef();
+
+    const [cvcError, setCvcError] = useState(null);
     const [totalAmount, setTotalAmount] = useState(0);
+
     const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
+    const payment = useSelector((state) => state.payment);
 
-    const onToken = (token) => {
-        setStripeToken(token);
+    const { card } = paymentMethod;
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await stripe.createToken(
+                "cvc_update",
+                elements.getElement(CardCvcElement)
+            );
+
+            dispatch(confirmPayment(paymentMethod, payment.paymentIntent));
+        } catch (error) {
+            setCvcError(error.message);
+        }
     };
-
-    useEffect(() => {
-        const makeRequest = async () => {
-            try {
-                const res = await userRequest.post("/api/payment", {
-                    tokenId: stripeToken.id,
-                    amount: totalAmount,
-                });
-
-                if (res.status !== 200) {
-                    console.log(res.data);
-                    return;
-                }
-
-                console.log(res.data);
-
-                const items = Object.keys(cart.cartItems).map((key) => ({
-                    productId: key,
-                    payablePrice: cart.cartItems[key].price,
-                    purchasedQty: cart.cartItems[key].qty,
-                }));
-
-                const orderData = {
-                    totalAmount,
-                    items,
-                    paymentStatus: "pending",
-                    paymentType: "cod",
-                };
-
-                props.handleOrderConfirmation(orderData);
-            } catch(error) {
-                console.log(error);
-            }
-        };
-
-        stripeToken && makeRequest();
-    }, [stripeToken, cart.cartItems]);
 
     useEffect(() => {
         if (!auth.authenticated) {
@@ -72,6 +58,7 @@ const PaymentForm = (props) => {
     }, [auth.authenticated]);
 
     return (
+        card &&
         totalAmount > 0 && (
             <>
                 <Review />
@@ -83,24 +70,60 @@ const PaymentForm = (props) => {
                 >
                     Payment method
                 </Typography>
-                <StripeCheckout
-                    name="Simple Shop"
-                    image="../ecommerce-logo.png"
-                    description={`Your total is ${totalAmount}€`}
-                    amount={`${totalAmount > 0 ? totalAmount * 100 : null}`}
-                    token={onToken}
-                    currency="EUR"
-                    stripeKey={KEY}
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                        <div
+                            style={{
+                                border: "1px solid #d4d4d4",
+                                width: "120px",
+                                borderRadius: "5px",
+                                padding: "8px",
+                            }}
+                        >
+                            <CardCvcElement
+                                ref={cardRef}
+                                onChange={() => {
+                                    setCvcError(null);
+                                }}
+                            />
+                        </div>
+                        <p
+                            style={{
+                                fontSize: "12px",
+                                color: "red",
+                                marginTop: "5px",
+                            }}
+                        >
+                            {cvcError}
+                        </p>
+                    </Grid>
+                </Grid>
+                <br />
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                    }}
                 >
-                    <Button variant="contained" color="primary">
-                        Pay {totalAmount}
-                    </Button>
-                </StripeCheckout>
-                
+                    <>
+                        <Button component={Link} to="/cart">
+                            Cancel
+                        </Button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSubmit}
+                        >
+                            Save
+                        </Button>
+                    </>
+                </div>
                 <Grid container>
                     <Grid item xs={12} sm={12}>
                         <Typography variant="caption" color="error">
-                            Please use this card number for testing : 4242 4242 4242 4242
+                            Please use this card number for testing : 4242 4242
+                            4242 4242
                         </Typography>
                     </Grid>
                 </Grid>

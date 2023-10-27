@@ -3,6 +3,12 @@ import {
     attachPaymentFailure,
     attachPaymentStart,
     attachPaymentSuccess,
+    confirmPaymentStart,
+    confirmpaymentFaiure,
+    confirmpaymentSuccess,
+    createPaymentFailure,
+    createPaymentStart,
+    createPaymentSuccess,
     getPaymentListFailure,
     getPaymentListStart,
     getPaymentListSuccess,
@@ -27,11 +33,47 @@ export const attachPaymentMethod = (method) => {
         const res = await userRequest.post("/api/payment/attach", {
             paymentMethod: method.paymentMethod,
         });
-        console.log(res);
+
         if (res.status >= 200 && res.status <= 400) {
             dispatch(attachPaymentSuccess());
         } else {
             dispatch(attachPaymentFailure());
+        }
+    };
+};
+
+export const createPaymentIntent = (method, selectedAddress) => {
+    return async (dispatch) => {
+        dispatch(createPaymentStart());
+
+        const res = await userRequest.post("/api/payment/create", {
+            paymentMethod: method.id,
+            selectedAddress,
+        });
+
+        console.log(res);
+
+        if (res.status >= 200 && res.status <= 400) {
+            dispatch(createPaymentSuccess(res.data));
+        } else {
+            dispatch(createPaymentFailure());
+        }
+    };
+};
+
+export const confirmPayment = (paymentMethod, paymentIntent) => {
+    return async (dispatch) => {
+        dispatch(confirmPaymentStart());
+
+        const res = await userRequest.post("/api/payment/confirm", {
+            paymentMethod: paymentMethod.id,
+            paymentIntent: paymentIntent.id,
+        });
+
+        if (res.status >= 200 && res.status <= 400 && res.data) {
+            dispatch(confirmpaymentSuccess());
+        } else {
+            dispatch(confirmpaymentFaiure());
         }
     };
 };

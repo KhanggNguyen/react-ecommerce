@@ -18,7 +18,7 @@ import {
     getAddress,
     getCartItems,
 } from "../../../actions";
-import { getPaymentMethodList } from "../../../actions/stripe";
+import { createPaymentIntent, getPaymentMethodList } from "../../../actions/stripe";
 import Cart from "../../Cart/Cart";
 import Addresses from "../Addresses";
 import PaymentForm from "../PaymentForm";
@@ -40,9 +40,8 @@ const Checkout = () => {
     const classes = useStyles();
 
     const [selectedAddress, setSelectedAddress] = useState(null);
-    // const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-    const [paymentMethods, setPaymentMethods] = useState([]);
-    const [paymentOption, setPaymentOption] = useState(false);
+    const [selectedMethod, setSelectedMethod] = useState(null);
+    const [paymentMethods] = useState([]);
     const [confirmOrder, setConfirmOrder] = useState(false);
 
     const [activeStep, setActiveStep] = useState(0);
@@ -54,13 +53,13 @@ const Checkout = () => {
     };
 
     const handleSelectPaymentMethod = (method) => {
-        setSelectedPaymentMethod(method);
-        //create intent
+        dispatch(createPaymentIntent(method, selectedAddress));
+        setSelectedMethod(method);
+        nextStep();
     };
 
     const handleUserOrderConfirmation = () => {
         setConfirmOrder(true);
-        setPaymentOption(true);
         dispatch(emptyCartItems());
         nextStep();
     };
@@ -146,7 +145,7 @@ const Checkout = () => {
         } else if (activeStep === 3) {
             return (
                 <PaymentForm
-                    paymentOption={paymentOption}
+                    paymentMethod={selectedMethod}
                     backStep={backStep}
                     nextStep={nextStep}
                     handleOrderConfirmation={handleConfirmOrder}

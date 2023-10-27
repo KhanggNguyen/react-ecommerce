@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     paymentMethods: [],
+    paymentIntent: null,
     error: null,
     message: "",
     isFetching: false,
@@ -40,6 +41,39 @@ const paymentSlice = createSlice({
             state.error = true;
             state.message = action.payload.message;
         },
+        createPaymentStart: (state) => {
+            state.isFetching = true;
+            state.error = false;
+            state.message = "";
+        },
+        createPaymentSuccess: (state, action) => {
+            state.isFetching = false;
+            state.paymentIntent = action.payload.paymentIntent
+            state.message = action.payload.message
+            state.error = false;
+        },
+        createPaymentFailure: (state, action) => {
+            state.isFetching = false;
+            state.error = true;
+            state.message = action.payload.message;
+        },
+        confirmPaymentStart: (state) => {
+            state.isFetching = true;
+            state.error = false;
+            state.message = "";
+        },
+        confirmpaymentSuccess: (state, action) => {
+            state.isFetching = false;
+            state.error = false;
+            state.paymentIntent = action.payload.paymentIntent;
+            state.message = action.payload.message;
+        },
+        confirmpaymentFaiure: (state, action) => {
+            state.isFetching = false;
+            state.error = true;
+            state.message = action.payload.message;
+        }
+
     },
 });
 
@@ -50,6 +84,12 @@ export const {
     attachPaymentStart,
     attachPaymentSuccess,
     attachPaymentFailure,
+    createPaymentStart,
+    createPaymentSuccess,
+    createPaymentFailure,
+    confirmPaymentStart,
+    confirmpaymentSuccess,
+    confirmpaymentFaiure
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

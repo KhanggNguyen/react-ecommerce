@@ -43,7 +43,7 @@ const Addresses = ({ onSelect }) => {
                 />
             ))}
             <Divider />
-            <Box className={{margin: "10px 0"}}>
+            <Box style={{margin: "10px 0"}}>
                 <Grid
                     container
                     spacing={3}
