@@ -28,7 +28,6 @@ const PrivateOutlet = ({ authenticated }) => {
 export const App = () => {
     // const cart = useSelector((state) => state.cart);
     const auth = useSelector((state) => state.auth);
-    console.log(auth);
     // const category = useSelector((state) => state.category);
     // const user = useSelector( (state) => state.user);
     const dispatch = useDispatch();
@@ -38,15 +37,6 @@ export const App = () => {
         dispatch(getAllCategory());
         dispatch(getAllProducts());
         dispatch(updateCartItems());
-
-        // dispatch(getAddress());
-        //console.log(`App.js GET user address `,  user);
-
-        
-
-        // console.log(auth);
-        // console.log(category);
-        // console.log(cart);
     }, [auth.authenticated]);
 
     return (

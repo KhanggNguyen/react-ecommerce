@@ -28,7 +28,6 @@ const ControlledAutocomplete = ({
                             return option;
                         }}
                         getOptionSelected={(option, value) => {
-                            console.log(`${name} : ${value}`);
                             return option === value;
                         }}
                         renderInput={(params) => (
@@ -40,7 +39,7 @@ const ControlledAutocomplete = ({
                                 required
                             />
                         )}
-                        onChange={(_, data) => console.log(data) && handleChange(data)}
+                        onChange={(_, data) => handleChange(data)}
                     />
                 )}
             />

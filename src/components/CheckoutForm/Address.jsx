@@ -34,12 +34,6 @@ const Address = ({ addr, onSelect, onEnableEdit }) => {
                     >
                         Edit
                     </Button>
-                    {/* <Button
-                        variant="outlined"
-                        onClick={() => console.log("handle delete.")}
-                    >
-                        Delete
-                    </Button> */}
                 </Grid>
             </Grid>
             <Grid container spacing={3}>

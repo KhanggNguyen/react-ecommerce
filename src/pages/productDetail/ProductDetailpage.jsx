@@ -26,10 +26,8 @@ const ProductDetailpage = () => {
     const [open, setOpen] = useState(false);
 
     let product = null
-    console.log(products);
     if(products && products.length > 0) {
         product = products.find( (p) => p._id === productId)
-        console.log(product);
     }
     
 

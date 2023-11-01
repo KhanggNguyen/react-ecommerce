@@ -50,7 +50,6 @@ const userSlice = createSlice({
         },
         getUserOrderSuccess: (state, action) => {
             state.orderFetching = false;
-            console.log(action.payload);
             state.orders = action.payload.orders;
         },
         getUserOrderFailure: (state, action) => {

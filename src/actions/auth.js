@@ -19,7 +19,6 @@ export const signup = (user) => {
         dispatch(signupStart());
         try {
             const res = await publicRequest.post(`/api/signup`, user);
-            console.log(res);
             if (res.status === 201) {
                 dispatch(signupSuccess());
             } else {
@@ -38,7 +37,7 @@ export const login = (user) => {
         dispatch(loginStart());
         try {
             const res = await publicRequest.post(`/api/signin`, user);
-            if (res.data.status === 200) {
+            if (res.status === 200) {
                 dispatch(loginSuccess(res.data));
             } else {
                 dispatch(loginFailure(res.data));
@@ -54,7 +53,7 @@ export const logout = () => {
         dispatch(logoutStart());
         try {
             const res = await userRequest.post(`/api/signout`);
-            if (res.data.status === 200) {
+            if (res.status === 200) {
                 dispatch(logoutSuccess());
                 localStorage.clear();
             } else {
@@ -74,8 +73,7 @@ export const isUserLoggedin = () => {
             if (res.data.status === 401) {
                 dispatch(refreshTokenStart());  
                 const res = await userRequest.post("/api/refresh-token");
-                console.log(res)
-                if(res.data.status >= 300){
+                if(res.status >= 300){
                     dispatch(refreshTokenFailure());
                 }else{
                     dispatch(refreshTokenSuccess(res.data));

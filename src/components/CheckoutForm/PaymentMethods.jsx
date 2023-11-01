@@ -14,8 +14,6 @@ const PaymentMethods = ({ onSelect }) => {
     const [newPaymentMethod, setNewPaymentMethod] = useState(false);
     const [paymentMethods, setPaymentMethods] = useState([]);
 
-    console.log(paymentMethods);
-
     useEffect(() => {
         const paymentMethods = payment?.paymentMethods?.map((method) => {
             return {

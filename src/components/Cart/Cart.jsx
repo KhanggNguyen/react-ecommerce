@@ -50,7 +50,6 @@ const Cart = (props) => {
 
     useEffect(() => {
         if (auth.authenticated && !props.onlyCartItems) {
-            console.log("test Cart.jsx");
             dispatch(getCartItems());
         }
     }, [auth.authenticated]);

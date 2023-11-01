@@ -19,7 +19,6 @@ export const getCartItems = () => {
         dispatch(getCartStart());
 
         const res = await userRequest.get(`/api/cart`);
-        console.log(res);
         if (res.status === 200) {
             dispatch(getCartSuccess(res.data));
         } else {
@@ -64,7 +63,6 @@ export const addToCart = (product, newQty = 1) => {
             const res = await userRequest.post(`/api/cart`, payload);
 
             if (res.status === 201) {
-                console.log("test AddToCartItems");
                 dispatch(getCartItems());
             }
         } else {
@@ -138,10 +136,8 @@ export const removeCartItem = (payload) => {
                     },
                 }
             );
-            console.log(res);
 
             if (res.status === 202) {
-                console.log("test RemoveCartItem");
                 dispatch(getCartItems());
             } else {
                 dispatch(removeCartItemFailure(res.data.error));
@@ -176,12 +172,10 @@ export const updateCartItems = () => {
         if (auth.authenticated) {
             localStorage.removeItem("cart");
             dispatch(getCartItems());
-            console.log("test UpdateCartItems");
         } else {
             if (cartItems) {
                 localStorage.setItem("cart", JSON.stringify(cartItems));
                 dispatch(addToCartSuccess({ cartItems }));
-                console.log("test");
             }
         }
     };

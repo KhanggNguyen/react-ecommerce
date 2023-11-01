@@ -96,7 +96,6 @@ const PaymentMethodForm = () => {
     }
 
     useEffect(() => {
-        console.log(selectedLocation);
     }, [selectedLocation]);
 
     async function handleSubmit() {

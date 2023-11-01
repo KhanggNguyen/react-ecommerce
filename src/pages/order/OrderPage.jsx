@@ -10,8 +10,6 @@ const OrderPage = () => {
     const classes = useStyles();
     const user = useSelector((state) => state.user);
     const [orders, setOrders] = useState([]);
-
-    console.log(orders);
     useEffect(() => {
         if (user.orders) setOrders(user.orders);
     }, []);
