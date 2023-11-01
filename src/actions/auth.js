@@ -38,7 +38,7 @@ export const login = (user) => {
         dispatch(loginStart());
         try {
             const res = await publicRequest.post(`/api/signin`, user);
-            if (res.status === 200) {
+            if (res.data.status === 200) {
                 dispatch(loginSuccess(res.data));
             } else {
                 dispatch(loginFailure(res.data));
@@ -54,7 +54,7 @@ export const logout = () => {
         dispatch(logoutStart());
         try {
             const res = await userRequest.post(`/api/signout`);
-            if (res.status === 200) {
+            if (res.data.status === 200) {
                 dispatch(logoutSuccess());
                 localStorage.clear();
             } else {
