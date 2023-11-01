@@ -41,7 +41,7 @@ export const login = (user) => {
             if (res.status === 200) {
                 dispatch(loginSuccess(res.data));
             } else {
-                dispatch(loginFailure(res.data.error));
+                dispatch(loginFailure(res.data));
             }
         } catch (err) {
             dispatch(loginFailure(err));

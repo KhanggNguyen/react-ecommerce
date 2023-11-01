@@ -23,7 +23,6 @@ const authSlice = createSlice({
             state.currentUser = action.payload.user;
             state.token = action.payload.token;
             state.authenticated = true;
-            console.log("test2");
         },
         loginFailure: (state, action) => {
             state.isFetching = false;
