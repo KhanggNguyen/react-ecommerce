@@ -42,10 +42,9 @@ const authSlice = createSlice({
             state.error = false;
             state.message = "";
         },
-        logoutFailure: (state, action) => {
+        logoutFailure: (state) => {
             state.isFetching = false;
             state.error = true;
-            state.message = action.payload.message;
         },
         signupStart: (state) => {
             state.error = false;
