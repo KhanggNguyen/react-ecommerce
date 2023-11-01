@@ -1,11 +1,12 @@
 import { userRequest } from "../helpers/axios";
+import { resetCart } from "../redux/cartRedux";
 import {
     attachPaymentFailure,
     attachPaymentStart,
     attachPaymentSuccess,
     confirmPaymentStart,
-    confirmpaymentFaiure,
-    confirmpaymentSuccess,
+    confirmPaymentFaiure,
+    confirmPaymentSuccess,
     createPaymentFailure,
     createPaymentStart,
     createPaymentSuccess,
@@ -51,10 +52,10 @@ export const createPaymentIntent = (method, selectedAddress) => {
             selectedAddress,
         });
 
-        console.log(res);
-
         if (res.status >= 200 && res.status <= 400) {
             dispatch(createPaymentSuccess(res.data));
+
+            dispatch(resetCart());
         } else {
             dispatch(createPaymentFailure());
         }
@@ -64,16 +65,15 @@ export const createPaymentIntent = (method, selectedAddress) => {
 export const confirmPayment = (paymentMethod, paymentIntent) => {
     return async (dispatch) => {
         dispatch(confirmPaymentStart());
-
         const res = await userRequest.post("/api/payment/confirm", {
             paymentMethod: paymentMethod.id,
             paymentIntent: paymentIntent.id,
         });
 
         if (res.status >= 200 && res.status <= 400 && res.data) {
-            dispatch(confirmpaymentSuccess());
+            dispatch(confirmPaymentSuccess(res.data));
         } else {
-            dispatch(confirmpaymentFaiure());
+            dispatch(confirmPaymentFaiure());
         }
     };
 };

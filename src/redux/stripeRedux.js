@@ -62,13 +62,13 @@ const paymentSlice = createSlice({
             state.error = false;
             state.message = "";
         },
-        confirmpaymentSuccess: (state, action) => {
+        confirmPaymentSuccess: (state, action) => {
             state.isFetching = false;
             state.error = false;
             state.paymentIntent = action.payload.paymentIntent;
             state.message = action.payload.message;
         },
-        confirmpaymentFaiure: (state, action) => {
+        confirmPaymentFaiure: (state, action) => {
             state.isFetching = false;
             state.error = true;
             state.message = action.payload.message;
@@ -88,8 +88,8 @@ export const {
     createPaymentSuccess,
     createPaymentFailure,
     confirmPaymentStart,
-    confirmpaymentSuccess,
-    confirmpaymentFaiure
+    confirmPaymentSuccess,
+    confirmPaymentFaiure
 } = paymentSlice.actions;
 
 export default paymentSlice.reducer;

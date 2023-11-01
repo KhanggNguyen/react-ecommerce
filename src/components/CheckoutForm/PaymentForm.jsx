@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Typography, Divider, Button, Grid } from "@material-ui/core";
 import Review from "./Review";
 import { isUserLoggedin } from "../../actions";
@@ -15,6 +16,7 @@ const PaymentForm = ({ paymentMethod }) => {
     const stripe = useStripe();
     const elements = useElements();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const cardRef = useRef();
 
@@ -37,6 +39,10 @@ const PaymentForm = ({ paymentMethod }) => {
             );
 
             dispatch(confirmPayment(paymentMethod, payment.paymentIntent));
+
+            alert("Payment Success");
+            /* Handle Success */
+            navigate("/");
         } catch (error) {
             setCvcError(error.message);
         }
