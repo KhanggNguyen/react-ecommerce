@@ -70,11 +70,11 @@ export const isUserLoggedin = () => {
         try {
             const res = await userRequest.post("/api/isUserLoggedIn");
 
-            if (res.data.status === 401) {
+            if (res.status === 401) {
                 dispatch(refreshTokenStart());  
                 const res = await userRequest.post("/api/refresh-token");
                 if(res.status >= 300){
-                    dispatch(refreshTokenFailure());
+                    dispatch(refreshTokenFailure(res.data));
                 }else{
                     dispatch(refreshTokenSuccess(res.data));
                 }

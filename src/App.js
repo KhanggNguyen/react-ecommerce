@@ -15,7 +15,7 @@ import ProductDetailpage from "./pages/productDetail/ProductDetailpage";
 import {
     isUserLoggedin,
     getAllCategory,
-    getAllProducts,
+    getAllProduct,
     // getAddress,
     updateCartItems,
     // getOrders,
@@ -35,7 +35,7 @@ export const App = () => {
     useEffect(() => {
         dispatch(isUserLoggedin());
         dispatch(getAllCategory());
-        dispatch(getAllProducts());
+        dispatch(getAllProduct());
         dispatch(updateCartItems());
     }, [auth.authenticated]);
 

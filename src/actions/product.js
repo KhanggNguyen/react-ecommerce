@@ -6,7 +6,7 @@ import {
     getProducts,
 } from "../redux/productRedux";
 
-export const getAllProducts = () => {
+export const getAllProduct = () => {
     return async (dispatch) => {
         const res = await publicRequest.get(`/api/product/`);
 

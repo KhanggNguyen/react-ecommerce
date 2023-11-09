@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Layout, Products } from "../../components";
 
-import { getAllProducts, getProductsByCategory } from "../../actions";
+import { getAllProduct, getProductsByCategory } from "../../actions";
 import useStyles from "./styles";
 
 const ProductListPage = () => {
@@ -16,7 +16,7 @@ const ProductListPage = () => {
         if (searchParams.get("categoryId")) {
             dispatch(getProductsByCategory(searchParams.get("categoryId")));
         }else{
-            dispatch(getAllProducts());
+            dispatch(getAllProduct());
         }
     }, [searchParams]);
 
