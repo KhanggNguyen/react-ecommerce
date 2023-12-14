@@ -117,7 +117,7 @@ const Cart = (props) => {
                                 Object.keys(cartItems).reduce(
                                     (totalPrice, key) => {
                                         const { price, qty } = cartItems[key];
-                                        return totalPrice + price * qty;
+                                        return totalPrice + parseInt(price) * parseInt(qty);
                                     },
                                     0
                                 )}
